@@ -3,19 +3,19 @@
     route.path == '/'
 
   " class="fixed-cart-bar background">
-    <div v-if="store.cart.products.length > 0" @click="enviarAlCarro" :class="['cart-bar', { hidden: !showElement }]">
+    <div v-if="store.cart.length > 0" @click="enviarAlCarro" :class="['cart-bar', { hidden: !showElement }]">
       <button class="cart-button">
         <i class="cart-icon icono pi pi-shopping-cart"></i>
 
-        <div v-for="product in store.cart.products.slice(0, 4)" :key="product.id" class="product-item">
-          <Button class="quantity-button" :label="`${product.quantity}`" severity="danger" rounded />
+        <div v-for="product in store.cart.slice(0, 4)" :key="product.id" class="product-item">
+          <Button class="quantity-button" :label="`${product.pedido_cantidad}`" severity="danger" rounded />
           <img class="img-cart" @mouseover="() => vueMenu = true"
-            :src="`${URI}/get-image?image_url=${product.product.productogeneral_urlimagen}`" alt="Product Image" />
+            :src="`${URI}/get-image?image_url=${product.productogeneral_urlimagen}`" alt="Product Image" />
         </div>
 
-        <div v-if="store.cart.products.length > 4" class="extra-products">
+        <div v-if="store.cart.length > 4" class="extra-products">
           <p class="extra-products-text">
-            +{{ store.cart.products.length - 4 }}
+            +{{ store.cart.length - 4 }}
           </p>
         </div>
       </button>
@@ -70,7 +70,7 @@ const enviarAlCarro = () => {
   justify-content: center;
   width: 100%;
   padding: 0 1rem;
-  /* background: linear-gradient(to top, rgb(255, 184, 184), rgba(255, 255, 255, 0)); */
+  background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
   z-index: 999;
 }
 
@@ -87,8 +87,7 @@ const enviarAlCarro = () => {
   width: 100%;
   justify-content: center;
   height: 3.5rem;
-  background-color: var(--p-secondary-color);
-  /* background-color: #ffffff; */
+  background-color: #ffffff;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
   padding: 0 3rem;
   transition: transform 0.3s, opacity 0.3s;
@@ -141,9 +140,6 @@ const enviarAlCarro = () => {
 .img-cart {
   height: 3rem;
   object-fit: contain;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  border-radius: 50%;
   transition: all 0.3s ease;
 }
 
@@ -164,7 +160,7 @@ const enviarAlCarro = () => {
 
 /* Background gradient */
 .background {
-  /* background: linear-gradient(to top, rgba(255, 230, 0, 0.397), rgba(255, 255, 255, 0)); */
+  background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
 }
 
 /* Transition for all elements */

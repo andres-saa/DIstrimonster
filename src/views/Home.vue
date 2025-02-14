@@ -4,13 +4,10 @@
   <RouterView></RouterView>
 
 
-  <BarraCategorias class="categories"></BarraCategorias>
+  <!-- <BarraCategorias class="categories"></BarraCategorias> -->
 
   <div class="grid">
-    <div class="sidebar">
-      <Sidebar></Sidebar>
 
-    </div>
     <MenuSection></MenuSection>
 
   </div>
@@ -28,7 +25,7 @@ import Sidebar from '@/components/Sidebar.vue';
 <style scoped>
 .grid {
   display: grid;
-  grid-template-columns: max-content 1fr;
+  grid-template-columns: 1fr;
 }
 
 

@@ -1,11 +1,11 @@
 <template>
-  <div ref="categoryBar" style="position: sticky; 
+  <div ref="categoryBar" style="position: sticky;
               box-shadow: 0 1rem .5rem #00000020;
-              top: 3.5rem; 
+              top: 3.5rem;
               /* padding: .2rem;  */
-              z-index: 999; 
+              z-index: 999;
               background-color: var(--p-secondary-color);
-              overflow-y: auto; 
+              overflow-y: auto;
               max-height: calc(100vh - 3.5rem);">
     <div class="container">
       <div v-for="(section, index) in filteredAndSortedCategories" :key="section.categoria_id"
@@ -34,7 +34,7 @@ import { URI } from '@/service/conection'
 const cart = usecartStore()
 
 // Orden personalizado de las categorías (IDs)
-const codigos = [10, 26, 8, 9, 13, 27, 11, 4, 5]
+const codigos = [107]
 
 // Filtra y ordena las categorías con base en 'codigos'
 // (aquí debes implementar la lógica real de orden con tu array `codigos` si deseas un orden específico)

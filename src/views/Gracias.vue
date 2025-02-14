@@ -1,67 +1,66 @@
 <template>
-    <div class="p-2 col-12 my-6"
-        style="height: auto;min-height: 90vh; display: flex;gap:2rem; justify-content: center; align-items: center;">
-        <div class="shadow-7 p-4"
-            style="border-radius: 0.5rem; max-width: 500px;display: flex;flex-direction: column; gap:2rem">
-            <p class="text-4xl text-center mt-5" style="font-weight: bold;"> 🤩{{ user.user.name.toUpperCase() }}🤩</p>
-            <p class="text-2xl text-center mb-5" style="font-weight: bold;">🔥MUCHAS GRACIAS POR TU COMPRA!🔥</p>
+  <div class="p-2 col-12 my-6"
+      style="height: auto;min-height: 90vh;padding: .5rem; display: flex;gap:rem; justify-content: center; align-items: center;">
+      <div class="shadow-7 p-4"
+          style="border-radius: 0.5rem; max-width: 500px;display: flex;flex-direction: column;gap: .5rem;font-size: 1.3rem;">
+          <p class="text-4xl text-center mt-5" style="font-weight: bold;text-align: center;"> 🤩{{ user.user.name.toUpperCase() }}🤩</p>
+          <p class="text-2xl text-center " style="font-weight: bold;text-align: center;">🔥MUCHAS GRACIAS POR TU COMPRA!🔥</p>
 
-            <p class="text-4xl text-center my-5" style="font-weight: bold; text-transform: uppercase;"> <span
-                    class="text-2xl">ID DEL PEDIDO</span> <br> #{{ store.last_order }}</p>
-
-            <!-- {{ store.cart }} -->
-            <!-- <pre>{{ text }}</pre> -->
-
-
-            <p class="text-2xl text-center my-3 p-3"
-                style=" border-radius: .3rem; background-color: var(--p-primary-color); padding: 1rem; color: white;">
-                Hemos recibido tu
-                pedido y en breve será despachado</p>
+          <p class="text-4xl text-center my-5" style="font-weight: bold; text-transform: uppercase;text-align: center;"> <span
+                  class="text-2xl">ID DEL PEDIDO</span> <br> #{{ store.last_order }}</p>
 
 
 
 
-            <div id="factura" style="width: 100%;text-transform: uppercase;">
+          <p class="text-2xl text-center my-3 p-3"
+              style=" border-radius: .3rem; background-color: var(--p-primary-color); padding: 1rem; color: white;">
+              Hemos recibido tu
+              pedido y en breve será despachado</p>
+
+<div>
+
+</div>
+
+
+          <div id="factura" style="width: 100%;text-transform: uppercase;">
 
 
 
 
 
 
-                <resumenGracias></resumenGracias>
+              <resumenGracias></resumenGracias>
 
 
 
 
-            </div>
+          </div>
 
 
-            <div style="display: flex;flex-direction: column;gap: 1rem;">
+          <div style="display: flex;flex-direction: column;gap: 1rem;">
 
 
-                <router-link to="/rastrear-pedido">
-                    <Button class="mt-3" icon="pi " iconPos="right" severity="warning"
-                        style="font-weight: bold; width: 100%;" label="PUEDES RASTREARLO AQUI"></Button>
-                </router-link>
+              <router-link to="/rastrear-pedido">
+                  <Button class="mt-3" icon="pi " iconPos="right" severity="warning"
+                      style="font-weight: bold; width: 100%;" label="PUEDES RASTREARLO AQUI"></Button>
+              </router-link>
 
 
-                <a v-if="user.user.payment_method_option.id == 6" :href="whatsappUrl" target="_blank"> <Button
-                        icon="pi pi-whatsapp" severity="danger" class="wsp"
-                        style="font-weight: bold;background-color: #00b66c; border: none; width: 100%;"
-                        label="REALIZAR TRANSFERENCIA"></Button>
-                </a>
-                <router-link to="/">
-                    <Button icon="pi pi-arrow-left" severity="danger" outlined
-                        style="font-weight: bold; border: none; width: 100%;" label="VOLVER AL MENU"></Button>
-                </router-link>
+              <a v-if="user.user.payment_method_option.id == 6" :href="whatsappUrl" target="_blank"> <Button
+                      icon="pi pi-whatsapp" severity="danger" class="wsp"
+                      style="font-weight: bold;background-color: #00b66c; border: none; width: 100%;"
+                      label="REALIZAR TRANSFERENCIA"></Button>
+              </a>
+              <router-link to="/">
+                  <Button icon="pi pi-arrow-left" severity="danger" outlined
+                      style="font-weight: bold; border: none; width: 100%;" label="VOLVER AL MENU"></Button>
+              </router-link>
 
 
+          </div>
 
-
-            </div>
-
-        </div>
-    </div>
+      </div>
+  </div>
 </template>
 
 <script setup>
@@ -79,18 +78,20 @@ import { formatoPesosColombianos } from '@/service/utils/formatoPesos';
 const text = ref('');
 const store = usecartStore();
 const user = useUserStore()
+import { useReportesStore } from '@/store/ventas';
 
+const reportes = useReportesStore()
 
 const obtenerHoraFormateadaAMPM = (fecha) => {
-    const fechaParseada = new Date(fecha);
-    const horas = fechaParseada.getHours();
-    const minutos = fechaParseada.getMinutes();
-    const ampm = horas >= 12 ? 'pm' : 'am';
-    const hora12 = horas % 12 || 12;
-    const horaFormateada = hora12 < 10 ? '0' + hora12 : hora12;
-    const minutosFormateados = minutos < 10 ? '0' + minutos : minutos;
+  const fechaParseada = new Date(fecha);
+  const horas = fechaParseada.getHours();
+  const minutos = fechaParseada.getMinutes();
+  const ampm = horas >= 12 ? 'pm' : 'am';
+  const hora12 = horas % 12 || 12;
+  const horaFormateada = hora12 < 10 ? '0' + hora12 : hora12;
+  const minutosFormateados = minutos < 10 ? '0' + minutos : minutos;
 
-    return `${horaFormateada}:${minutosFormateados} ${ampm}`;
+  return `${horaFormateada}:${minutosFormateados} ${ampm}`;
 };
 
 
@@ -99,64 +100,45 @@ const obtenerHoraFormateadaAMPM = (fecha) => {
 
 
 onMounted(() => {
-    text.value = `Hola soy *${user.user.name.toUpperCase()}* 🤗 acabo de hacer el siguiente pedido en la página web. El número de la orden es *#${store.last_order}*.\n
+  reportes.setLoading(false, "enviando tu pedido");
 
-*Escribo para Realizar la Transferecia*\n
-*🛒 PRODUCTOS*\n${store.cart.products.map(product => `*${product.quantity}* ${product.product.product_name}`).join('\n')}\n\n`;
+  text.value = `Hola soy *${user.user.name.toUpperCase()}* 🤗 acabo de hacer el siguiente pedido en la página web. El número de la orden es *#${store.last_order}*.\n
 
-    if (store.cart.additions.length > 0) {
-        text.value += `*➕ ADICIONES*\n${store.cart.additions.filter(a => a.group == 'ADICIONES').map(product => `*${product.quantity}* ${product.name}`).join('\n')}\n\n`;
-    }
+  *Escribo para Realizar la Transferecia*\n
 
-    if (store.cart.additions.filter(a => a.group == 'CAMBIOS').length > 0) {
-        text.value += `*➕ CAMBIOS*\n${store.cart.additions.filter(a => a.group == 'CAMBIOS').map(product => `*${product.quantity}* ${product.name}`).join('\n')}\n\n`;
-    }
+  *Muchas Gracias* 🙏`;
 
-    if (store.cart.additions.filter(a => a.group == 'SALSAS').length > 0) {
-        text.value += `*➕ SALSAS*\n${store.cart.additions.filter(a => a.group == 'SALSAS').map(product => ` ${product.name}`).join('\n')}\n\n`;
-    }
-
-    text.value += `*📍 DIRECCIÓN*\n${user.user.address} BARRIO ${site.location?.neigborhood?.name}\n
-*📞 TELEFONO*\n${user.user.phone_number}\n
-*📝 NOTAS*\n${store.cart.order_notes || 'Sin notas'}\n
-*💰 METODO DE PAGO*\n${user.user.payment_method_option.name}\n
-*Muchas Gracias* 🙏`;
-
-    console.log(text.value);
+  console.log(text.value);
 
 });
 
 
 
 const whatsappUrl = computed(() => {
-    const baseUrl = 'https://api.whatsapp.com/send';
-    const urlParams = new URLSearchParams({
-        phone: '573053447255',
-        text: text.value
-    });
-    return `${baseUrl}?${urlParams.toString()}`;
+  const baseUrl = 'https://api.whatsapp.com/send';
+  const urlParams = new URLSearchParams({
+      phone: '573053447255',
+      text: text.value
+  });
+  return `${baseUrl}?${urlParams.toString()}`;
 });
 
 
 onUnmounted(() => {
-    // user.user = {
-    //       name:'',
-    //       neigborhood:'',
-    //       address:'',
-    //       phone_number:'',
-    //       payment_method_option:'',
-    //       was_reserva:false
-    //   },
+  // user.user = {
+  //       name:'',
+  //       neigborhood:'',
+  //       address:'',
+  //       phone_number:'',
+  //       payment_method_option:'',
+  //       was_reserva:false
+  //   },
 
-    store.cart = {
-        products: [],
-        total_cost: 0,
-        additions: []  // Nueva propiedad para manejar las adiciones a nivel del carrito
-    }
+  store.cart = []
 })
 
 // onBeforeMount(() => {
-//     store.cart.products.length <= 0? router.push('/'):''
+//     store.cart.length <= 0? router.push('/'):''
 // })
 
 </script>
@@ -164,19 +146,26 @@ onUnmounted(() => {
 
 <style scoped>
 @keyframes parpadeo {
-    0% {
-        filter: brightness(1);
-    }
+  0% {
+      filter: brightness(1);
+  }
 
-    50% {
-        filter: brightness(1.1);
-        transform: scale(1.01);
-    }
+  50% {
+      filter: brightness(1.1);
+      transform: scale(1.01);
+  }
 
 }
 
 .wsp {
-    animation: parpadeo ease infinite .5s;
-    transition: all ease .5s;
+  animation: parpadeo ease infinite .5s;
+  transition: all ease .5s;
+}
+
+
+*{
+  /* font-size: 1.3rem; */
+  /* margin: 0; */
+
 }
 </style>
