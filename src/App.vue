@@ -25,8 +25,8 @@ onMounted(async () => {
   if (status) {
     siteStore.status = status
   }
-  const data = await fetchService.get(`${URI}/get-product-integration/6149/${12}`)
-  cart.menu = data
+  const data = await fetchService.get(`${URI}/get-product-integration-distrimonster`)
+  cart.menu = data.data
 
 })
 </script>
@@ -36,8 +36,7 @@ onMounted(async () => {
     <div
     class=""
     v-if="reportes.loading.visible"
-    style="width: 100vw;transition: all ease .3s;backdrop-filter: blur(5px);  flex-direction: column;pointer-events:auto; background-color: #00000020; height: 100vh;position: fixed;display: flex;align-items: center;justify-content: center; left: 0;right: 0;z-index: 99999999;"
-  >
+    style="width: 100vw;transition: all ease .3s;backdrop-filter: blur(5px);  flex-direction: column;pointer-events:auto; background-color: #00000020; height: 100vh;position: fixed;display: flex;align-items: center;justify-content: center; left: 0;right: 0;z-index: 99999999;"  >
   <div class="luz" style="aspect-ratio: 1  / 1;display: flex;justify-content: center;align-items: center;">
 
     <div class="girar" style="width: 150px;z-index: -1; height: 150px;padding: 3rem; background-color: var(--p-primary-color); position: absolute;"></div>

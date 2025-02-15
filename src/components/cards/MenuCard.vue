@@ -1,35 +1,41 @@
 <template>
     <div class="container67 shadow-3 col-12 p-0 product-card" @click="open(props.product)">
-        <div class="imagen">
+        <h3 style="grid-area: a;">
+                <b>{{ props.product.productogeneral_descripcion }}</b>
+        </h3>
+
+        <div style="grid-area: b;" class="imagen">
             <!-- Imagen con lazy loading personalizado -->
             <img ref="productImage" class="imagen-producto lazy"
                 :data-src="`${URI}/get-image?image_url=${props.product.productogeneral_urlimagen}`"
                 src="https://media.tenor.com/IfbOs_yh89AAAAAM/loading-buffering.gif" alt="Descripción del producto" />
         </div>
 
-        <div class="texto">
-            <h3>
-                <b>{{ props.product.productogeneral_descripcion }}</b>
-            </h3>
+        <div style="grid-area: c;" class="texto">
+
+
+
+
 
             <!-- Contenedor interno que agrupa la descripción y el precio -->
             <div class="texto-content">
                 <!-- Fila de arriba (vacía en este ejemplo, la puedes eliminar si no la usas) -->
-                <div class="flex-row-center-space-between">
-                    <!-- Puedes agregar contenido aquí si lo deseas -->
-                </div>
 
                 <!-- Descripción -->
-                <span class="max-width-100">
+                <span class="max-width-100" style="margin-bottom: 1rem;">
                     {{ truncatedDescription }}
                 </span>
 
-                <!-- Fila de acciones (corazón y precio) -->
-                <div class="flex-row-center-space-between">
-                    <!-- <Button icon="pi pi-heart text-xl p-0 m-0" text rounded class="heart-button" /> -->
+
+
+            </div>
+
 
                     <div class="flex-center-gap">
-                        <h2 class="text-xl p-0 m-0 precio">
+                      <span>Detal:</span>
+                        <h3 class="text-2xl p-0 m-0 precio">
+
+
                             <b>
                                 {{
                                     formatoPesosColombianos(
@@ -38,11 +44,58 @@
                                     )
                                 }}
                             </b>
-                        </h2>
+
+
+
+                        </h3>
                     </div>
-                </div>
-            </div>
+
+
+
+                    <div class="flex-center-gap">
+                      <span>Mayor:</span>
+                        <h3 class="text-2xl p-0 m-0 precio">
+
+
+                            <b>
+                                {{
+                                    formatoPesosColombianos(
+                                        props.product.mayor
+
+                                    )
+                                }}
+                            </b>
+
+
+
+                        </h3>
+                    </div>
+
+
+
+                    <div class="flex-center-gap">
+                      <span>Distribuidor:</span>
+                        <h3 class="text-2xl p-0 m-0 precio">
+
+
+                            <b>
+                                {{
+                                    formatoPesosColombianos(
+                                        props.product.distribuidor
+
+                                    )
+                                }}
+                            </b>
+
+
+
+                        </h3>
+                    </div>
+
+
+
         </div>
+
 
     </div>
 
@@ -166,6 +219,8 @@ onBeforeUnmount(() => {
 /* Contenedor “imagen” (estilos unificados) */
 .imagen {
     display: flex;
+
+
     align-items: center;
 }
 
@@ -219,6 +274,7 @@ onBeforeUnmount(() => {
 /* Para alinear elementos con gap y centrarlos en fila */
 .flex-center-gap {
     display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 1rem;
 }
@@ -242,7 +298,7 @@ onBeforeUnmount(() => {
     display: grid;
     gap: 1rem;
     /* Spacing between grid items */
-    grid-template-columns: 1fr;
+
     height: 100%;
     width: 100%;
     margin: 0;
@@ -253,7 +309,11 @@ onBeforeUnmount(() => {
     background-color: #fff;
     transition: all ease 0.3s;
     cursor: pointer;
-    grid-template-columns: 1fr 2fr;
+    grid-template-areas:
+            "a a a"
+            "b c c";
+            grid-template-columns: 1fr 1fr;
+
 }
 
 .character {
@@ -279,21 +339,9 @@ onBeforeUnmount(() => {
     }
 }
 
-@media (max-width: 2000px) {
-    .container67 {
-        grid-template-columns: 1fr 2fr;
-        width: 100%;
-    }
 
-    .imagen,
-    .texto {
-        width: 100%;
-    }
 
-    .character {
-        display: inline;
-    }
-}
+
 
 /* Animación e imágenes */
 .rating {

@@ -32,13 +32,9 @@
 
 
               <div class="col-6 my-0 text-right py-2">
-                  <h6 v-if="product.modificadorseleccionList.length < 1" class="text-end">
-                      {{ formatoPesosColombianos(product.pedido_precio * product.pedido_cantidad) }}
-                  </h6>
-
-                  <h6 v-else class="text-end">
-                      {{ formatoPesosColombianos(product.pedido_base_price * product.pedido_cantidad) }}
-                  </h6>
+                <h6 class="text-end">
+                  {{ formatoPesosColombianos(calcularPrecioProducto(product)) }}
+                </h6>
               </div>
 
 
@@ -124,11 +120,6 @@
                   severity="danger"></Button>
           </router-link>
 
-          <Tag v-if="siteStore.status?.status == 'closed' && route.path != '/reservas'" class="mt-2 tag-fullheight"
-              severity="danger">
-              Cerrado, abre a las {{ siteStore.status.next_opening_time }}
-          </Tag>
-
 
           <div>
 
@@ -142,19 +133,11 @@
                   severity="help"></Button>
           </router-link>
 
-          <!-- Botón “Finalizar pedido” al reservar -->
-          <router-link to="/pay" v-else-if="route.path.includes('reservas')">
-              <Button @click="() => {
-                  orderService.sendOrderReserva()
-                  sending = true
-              }" iconPos="right" icon="pi pi-arrow-right" label="Finalizar pedido"
-                  class="mt-2 button-common button-black button-fullwidth button-bold button-no-border button-no-outline"
-                  severity="help"></Button>
-          </router-link>
+
 
           <!-- Botón “Finalizar pedido” si el restaurante no está cerrado -->
           <router-link to="/pay"
-              v-else-if="siteStore.status?.status !== 'closed' && siteStore.status?.status && route.path == '/cart'">
+              v-else-if="route.path == '/cart'">
               <Button iconPos="right" icon="pi pi-arrow-right" label="Finalizar pedido"
                   class="mt-2 button-common button-black button-fullwidth button-bold button-no-border button-no-outline"
                   severity="help"></Button>
@@ -162,7 +145,7 @@
 
 
           <Button :disabled = "reportes.loading.visible"
-              v-else-if="siteStore.status?.status !== 'closed' && siteStore.status?.status && route.path == '/pay' && !reportes.loading.visible"
+              v-else-if="route.path == '/pay' && !reportes.loading.visible"
               @click="() => {
                   orderService.sendOrder()
                   sending = true
@@ -193,6 +176,17 @@ const store = usecartStore();
 const siteStore = useSitesStore();
 const user = useUserStore();
 
+const calcularPrecioProducto = (product) => {
+  const cantidad = product.pedido_cantidad;
+
+  if (cantidad >= 700) {
+    return product.distribuidor * cantidad;
+  } else if (cantidad >= 500) {
+    return product.mayor * cantidad;
+  } else {
+    return product.pedido_precio * cantidad;
+  }
+};
 const agrupados = ref({});
 
 // const update = () => {

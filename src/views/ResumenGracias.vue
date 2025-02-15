@@ -32,14 +32,10 @@
 
 
               <div class="col-6 my-0 text-right py-2">
-                  <h6 v-if="product.modificadorseleccionList.length < 1" class="text-end">
-                      {{ formatoPesosColombianos(product.pedido_precio * product.pedido_cantidad) }}
-                  </h6>
-
-                  <h6 v-else class="text-end">
-                      {{ formatoPesosColombianos(product.pedido_base_price * product.pedido_cantidad) }}
-                  </h6>
-              </div>
+  <h6 class="text-end">
+    {{ formatoPesosColombianos(calcularPrecioProducto(product)) }}
+  </h6>
+</div>
 
 
               </div>
@@ -134,6 +130,18 @@ const siteStore = useSitesStore();
 const user = useUserStore();
 
 const agrupados = ref({});
+
+const calcularPrecioProducto = (product) => {
+  const cantidad = product.pedido_cantidad;
+
+  if (cantidad >= 700) {
+    return product.distribuidor * cantidad;
+  } else if (cantidad >= 500) {
+    return product.mayor * cantidad;
+  } else {
+    return product.pedido_precio * cantidad;
+  }
+};
 
 // const update = () => {
 //     agrupados.value = store.cart.additions.reduce((acumulador, elemento) => {

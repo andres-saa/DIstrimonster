@@ -1,9 +1,9 @@
 <template>
   <div>
       <div class="cart-has-products" v-if="store.cart.length > 0">
-          <h1 class="cart-title text-center text-2xl my-8">
+          <h2 class="cart-title text-center text-2xl my-8">
               <b>CARRITO DE COMPRAS</b>
-          </h1>
+          </h2>
 
           <div class="cart-grid">
 
@@ -16,6 +16,8 @@
 
                       <div>    <div class="cart-product-description-container">
                                   <span class="p-0 m-0">{{ product.pedido_nombre_producto }}</span>
+
+
                               </div>
 
                           <img class="cart-product-img p-1"
@@ -28,16 +30,44 @@
                           severity="danger" rounded />
 
                       <div class="cart-product-info">
+
                           <div class="cart-product-info-inner">
+<b>
+                            <div style="display: flex;justify-content: end;">
+                              <div v-if="product.pedido_cantidad >= 500 && product.pedido_cantidad < 700">
+                                <Tag  style="width: max-content; margin-right: .5rem;"> Precio por mayor</Tag>
+
+                                {{ formatoPesosColombianos(product.mayor) }}
 
 
+                              </div>
+                              <div v-else-if="product.pedido_cantidad >= 700">
+                                <Tag  style="width: max-content;margin-right: .5rem;"> Precio de distribuidor</Tag>
+                                {{ formatoPesosColombianos(product.distribuidor) }}
+
+                              </div>
+
+                              <div v-else>
+                                <Tag  style="width: max-content;margin-right: .5rem;"> Al detal</Tag>
+                                {{ formatoPesosColombianos(product.minor) }}
+
+                              </div>
+
+
+
+                            </div>
+</b>
                               <div class="cart-product-quantity-container">
+
+
                                   <div class="cart-product-quantity-control p-0">
                                       <Button class="cart-quantity-btn-minus"
                                           @click="store.decrementProduct(product.signature)"
                                           icon="pi pi-minus" severity="danger"></Button>
 
-                                      <span class="cart-product-quantity-label" readonly>{{ product.pedido_cantidad }}</span>
+                                      <!-- <span class="cart-product-quantity-label" readonly>{{ product.pedido_cantidad }}</span> -->
+                                      <InputNumber class="cart-product-quantity-label" :max-fraction-digits="0" min="1" :inputStyle="{ width: '100%',maxWidth:'10rem', height: '100%',textAlign:'center', borderRadius:'0' }" style="height: 2rem;" type="number"  v-model="product.pedido_cantidad"
+                                      />
 
                                       <Button class="cart-quantity-btn-plus"
                                           @click=" store.incrementProduct (product.signature)" icon="pi pi-plus"
@@ -45,9 +75,19 @@
                                   </div>
 
 
-                      <h5 class="p-0 m-0 " style="margin-left: 1rem;">
-                          <b>{{ formatoPesosColombianos(product.pedido_precio  * product.pedido_cantidad) }}</b>
-                      </h5>
+                      <h4 class="p-0 m-0 " style="margin-left: 1rem;">
+                        <b>
+                        <h3 v-if="product.pedido_cantidad >= 700">
+                          {{ formatoPesosColombianos(product.distribuidor * product.pedido_cantidad) }}
+                        </h3>
+                        <h4 v-else-if="product.pedido_cantidad >= 500">
+                          {{ formatoPesosColombianos(product.mayor * product.pedido_cantidad) }}
+                        </h4>
+                        <h4 v-else>
+                          {{ formatoPesosColombianos(product.pedido_precio * product.pedido_cantidad) }}
+                        </h4>
+                      </b>
+                      </h4>
 
                               </div>
 
@@ -121,6 +161,8 @@ import { orderService } from '@/service/order/orderService';
 import { useUserStore } from '@/store/user';
 import { Button } from 'primevue';
 import { URI } from '@/service/conection';
+import {InputNumber} from 'primevue';
+import {Tag} from 'primevue';
 
 const store = usecartStore()
 const siteStore = useSitesStore()
@@ -280,7 +322,7 @@ onMounted(async () => {
   object-fit: cover;
   aspect-ratio: 1 / 1;
   border: 3px solid var(--primary-color);
-  border-radius: 50%;
+  border-radius: .5rem;
   /* si deseas conservar el borde redondo */
 }
 
@@ -323,6 +365,7 @@ onMounted(async () => {
 .cart-product-quantity-container {
   display: flex;
   align-items: center;
+  justify-content: end;
 }
 
 .cart-product-quantity-control {
@@ -338,7 +381,7 @@ onMounted(async () => {
   border: none;
   outline: none;
   width: 2rem;
-  height: 1.5rem;
+  height: 2rem;
 }
 
 /* Bordes distintos si lo deseas */
@@ -355,9 +398,9 @@ onMounted(async () => {
 .cart-product-quantity-label {
   background-color: transparent;
   text-align: center;
-  width: 3rem;
+  width: 5rem;
   font-weight: bold;
-  height: 1.5rem;
+  height: 2rem;
   color: black;
   border: none;
   display: flex;
@@ -434,14 +477,14 @@ onMounted(async () => {
 .cart-addition-quantity-btn-minus,
 .cart-addition-quantity-btn-plus {
   width: 2rem;
-  height: 1.5rem;
+  height: 2rem;
   border: none;
 }
 
 /* Label de cantidad del adicional */
 .cart-addition-quantity-label {
   width: 2rem;
-  height: 1.5rem;
+  height: 2rem;
   font-weight: bold;
   text-align: center;
   border: none;

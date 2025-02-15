@@ -105,7 +105,7 @@ export const orderService = {
 
     try {
       report.setLoading(true, `enviando tu pedido ${user.user.name}`);
-      const response = await axios.post(`${URI}/order`, order);
+      const response = await axios.post(`${URI}/order-distrimonster`, order);
       if (response.status === 200) {
         cart.sending_order = false;
         cart.last_order = response.data;
@@ -240,7 +240,6 @@ function validateOrder(order) {
   ) {
     alert("Sus datos estan incompletos por favor reviselos");
     cart.sending_order = false;
-
     return false;
   }
 

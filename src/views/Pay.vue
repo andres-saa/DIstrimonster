@@ -33,21 +33,16 @@
               <div class="form-group">
                   <InputText v-model="user.user.address" id="address" placeholder="DIRECCION" />
               </div>
-
               <div class="form-group">
                   <InputMask v-model="user.user.phone_number" id="phone_number" mask="999 999 9999"
                       placeholder="TELEFONO" />
               </div>
-
               <div class="form-group">
                   <Select style="width: 100%;" v-model="user.user.payment_method_option" id="payment_method"
-                      placeholder="METODO DE PAGO" :options="payment_method_options" optionLabel="name" />
+                      placeholder="METODO DE PAGO" :options="payment_method_options.filter(p => [6,5,6,7,8,].includes(p.id) )" optionLabel="name" />
               </div>
-
               <Textarea v-model="store.cart.order_notes" class="order-notes" placeholder="NOTAS:"></Textarea>
-
           </div>
-
           <resumen class="resumen-column"></resumen>
 
       </div>

@@ -24,14 +24,13 @@
 
     <template #header>
       <div class="header-container">
-        <h3 style="margin-right: 2rem;">
+        <h3 style="margin-right: 2.5rem;">
           {{ store.currentProduct.productogeneral_descripcion }}
         </h3>
         <h3>
           {{
             formatoPesosColombianos(
-              store.currentProduct.productogeneral_precio  * quantity||
-              store.currentProduct.lista_presentacion[0].producto_precio * quantity
+              precioTotal
             )
           }}
         </h3>
@@ -40,21 +39,20 @@
 
     <template #footer>
       <div
-                                                    class="cart-addition-quantity-control ml-2">
+                                                    class="cart-addition-quantity-control">
                                                     <Button @click="quantity>1? quantity-=1 : 0"
-                                                        severity="danger" style="border-radius:.5rem 0 0 .5rem" class="cart-addition-quantity-btn-minus"
+                                                        severity="danger" style="border-radius:.5rem 0 0 .5rem;height: 2.5rem;" class="cart-addition-quantity-btn-minus"
                                                         icon="pi pi-minus"></Button>
 
-                                                    <span  readonly
-                                                        class="cart-addition-quantity-label p-0 text-center">{{quantity
-                                                            }}</span>
+                                                    <InputNumber :max-fraction-digits="0" min="1" :inputStyle="{ width: '100%',maxWidth:'10rem', height: '2.5rem',borderRadius:'0' }" style="height: 100%;" type="number"  v-model="quantity"
+                                                        class="cart-addition-quantity-label p-0 text-center"/>
 
                                                     <Button @click="quantity+=1"
-                                                        severity="danger" style="border-radius:0 .5rem .5rem 0" class="cart-addition-quantity-btn-plus"
+                                                        severity="danger" style="border-radius:0 .5rem .5rem 0;height: 2.5rem;" class="cart-addition-quantity-btn-plus"
                                                         icon="pi pi-plus"></Button>
                                                 </div>
       <div class="footer-container">
-        <Button class="add-cart-footer-btn" @click="addToCart(store.currentProduct)" label="Agregar al carrito"
+        <Button class="add-cart-footer-btn" @click="addToCart(store.currentProduct)" label="Agregar "
           icon="pi pi-shopping-cart" />
       </div>
     </template>
@@ -73,6 +71,160 @@
         <p class=" " style="margin: 1rem 0;">
           {{ store.currentProduct.productogeneral_descripcionweb?.toLowerCase() }}
         </p>
+
+
+
+
+
+
+        <div class="flex-center-gap">
+                      <Tag v-if="quantity < 500">
+
+                        <h3 class="text-2xl p-0 m-0 precio">
+
+                          <span>Detal: </span>
+<b>
+    {{
+        formatoPesosColombianos(
+            store.currentProduct.productogeneral_precio ||
+            store.currentProduct.lista_presentacion[0].producto_precio
+        )
+    }}
+</b>
+
+
+
+</h3>
+                      </Tag>
+                        <h3 v-else class="text-2xl p-0 m-0 precio">
+
+                          <span>Detal: </span>
+                            <b>
+                                {{
+                                    formatoPesosColombianos(
+                                        store.currentProduct.productogeneral_precio ||
+                                        store.currentProduct.lista_presentacion[0].producto_precio
+                                    )
+                                }}
+                            </b>
+
+
+
+                        </h3>
+
+
+
+
+                    </div>
+
+
+
+                    <div class="flex-center-gap" style="margin: 1rem 0;">
+
+                      <Tag v-if="quantity >= 500 && quantity < 700">
+
+                      <h3 class="text-2xl p-0 m-0 precio">
+                        <span>Mayor: </span>
+
+                          <b>
+                              {{
+                                  formatoPesosColombianos(
+                                      store.currentProduct.mayor
+
+                                  )
+                              }}
+                          </b>
+
+
+                      </h3>
+                      </Tag>
+                      <div v-else>
+
+                        <h3 class="text-2xl p-0 m-0 precio">
+
+                          <span>Mayor: </span>
+                            <b>
+                                {{
+                                    formatoPesosColombianos(
+                                        store.currentProduct.mayor
+
+                                    )
+                                }}
+                            </b>
+
+
+
+                        </h3>
+
+                        <span v-if="quantity < 500">Para compras de 500 unidades en adelante te faltan <b>{{ 500 - quantity }}</b> </span>
+                      </div>
+
+
+
+                    </div>
+
+
+
+                    <div class="flex-center-gap" style="margin: 1rem 0;">
+
+                      <div v-if="quantity < 700">
+
+                        <h3 class="text-2xl p-0 m-0 precio">
+                          <span>Distribuidor: </span>
+
+                            <b>
+                                {{
+                                    formatoPesosColombianos(
+                                        store.currentProduct.distribuidor
+
+                                    )
+                                }}
+                            </b>
+
+
+
+                        </h3>
+                        <span>Para compras de 700 unidades en adelante te faltan <b>{{ 700 - quantity }}</b> </span>
+                      </div>
+                     <Tag v-else>
+
+                      <span>Distribuidor: </span>
+                        <h3 class="text-2xl p-0 m-0 precio">
+
+
+                            <b>
+                                {{
+                                    formatoPesosColombianos(
+                                        store.currentProduct.distribuidor
+
+                                    )
+                                }}
+                            </b>
+
+
+
+                        </h3>
+                     </Tag>
+
+
+                  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <!-- Agrupadores de modificadores -->
         <div v-for="i in store.currentProduct.lista_agrupadores" :key="i.modificador_id">
@@ -176,10 +328,12 @@ import { useToast } from 'primevue/usetoast';
 import { formatoPesosColombianos } from '@/service/utils/formatoPesos';
 import router from '@/router/index.js';
 import { useRoute } from 'vue-router';
+import {Tag} from 'primevue';
 import { usecartStore } from '@/store/shoping_cart';
 import { Dialog } from 'primevue';
 import { Button } from 'primevue';
 import { URI } from '@/service/conection';
+import {InputNumber} from 'primevue';
 // import { URI } from '@/service/conection';
 const store = usecartStore();
 const route = useRoute();
@@ -361,6 +515,24 @@ watch(
  * onMounted inicial
  */
 
+ const precioTotal = computed(() => {
+  if (!store.currentProduct) return 0;
+
+  const qty = quantity.value;
+  let precioUnitario = store.currentProduct.minor;
+
+  // Si la cantidad es mayor o igual a 700, se usa el precio de distribuidor
+  if (qty >= 700) {
+    precioUnitario = store.currentProduct.distribuidor;
+  }
+  // Si es mayor o igual a 500 pero menor a 700, se usa el precio mayor
+  else if (qty >= 500) {
+    precioUnitario = store.currentProduct.mayor;
+  }
+
+  return precioUnitario * qty;
+});
+
 const screenWidth = ref(window.innerWidth);
 
 const updateScreenWidth = () => {
@@ -511,7 +683,7 @@ const toast = useToast();
   padding: 0;
   padding-bottom: 0;
   display: grid;
-  gap: 2rem;
+  gap: 2.5rem;
   grid-template-columns:2fr 1.5fr;
 }
 
@@ -531,7 +703,7 @@ const toast = useToast();
   .details {
   box-shadow: 0rem 1rem 3rem 1rem #00000010;
   padding: 1rem;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 
 
@@ -559,7 +731,7 @@ const toast = useToast();
 .description {
   font-weight: bold;
   color: black;
-  padding: 0.2rem 0;
+  padding: 0.2.5rem 0;
   /* background-color: red; */
 }
 
@@ -574,7 +746,7 @@ const toast = useToast();
 /* Checkbox de modificador */
 .modificador-checkbox {
   /* outline: 2px solid var(--p-primary-color); */
-  border-radius: 0.2rem;
+  border-radius: 0.2.5rem;
 }
 
 /* Contenido de la fila (nombre y precio/cantidad a la derecha) */
@@ -613,14 +785,14 @@ const toast = useToast();
 /* Botón genérico de + / - */
 .quantity-btn {
   /* margin-left: .5rem; */
-  width: 2rem;
+  width: 2.5rem;
   height: 1.5rem;
   border: none;
 }
 
 /* Input de cantidad */
 .quantity-input {
-  width: 2rem;
+  width: 2.5rem;
   text-align: center;
   font-weight: bold;
   padding: 0;
@@ -780,7 +952,7 @@ const toast = useToast();
 }
 
 .cart-addition-quantity-label {
-    width: 3rem;
+    width: 4rem;
     height: 1.5rem;
     font-weight: bold;
     text-align: center;
@@ -790,10 +962,11 @@ const toast = useToast();
     justify-content: center;
 }
 .cart-addition-quantity-control {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.411);
-    margin-left: 1rem;
+    /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.411); */
+    /* margin-left: 1rem; */
     align-items: center;
     display: flex;
+    height: 2.5rem;
     border-radius: 0.3rem;
 }
 
@@ -805,5 +978,16 @@ const toast = useToast();
 /* Para texto en mayúsculas */
 .mayuscula {
   text-transform: uppercase;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
 }
 </style>
