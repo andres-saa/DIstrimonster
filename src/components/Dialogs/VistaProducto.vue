@@ -44,7 +44,7 @@
                                                         severity="danger" style="border-radius:.5rem 0 0 .5rem;height: 2.5rem;" class="cart-addition-quantity-btn-minus"
                                                         icon="pi pi-minus"></Button>
 
-                                                    <InputNumber :max-fraction-digits="0" min="1" :inputStyle="{ width: '100%',maxWidth:'10rem', height: '2.5rem',borderRadius:'0' }" style="height: 100%;" type="number"  v-model="quantity"
+                                                    <InputNumber :max-fraction-digits="0" min="1" :inputStyle="{ width: '100%',maxWidth:'10rem', height: '2.5rem',borderRadius:'0',textAlign:'center' }" style="height: 100%;" type="number"  v-model="quantity"
                                                         class="cart-addition-quantity-label p-0 text-center"/>
 
                                                     <Button @click="quantity+=1"
@@ -121,7 +121,7 @@
 
                     <div class="flex-center-gap" style="margin: 1rem 0;">
 
-                      <Tag v-if="quantity >= 500 && quantity < 700">
+                      <Tag v-if="quantity >= 500 && quantity < 1000">
 
                       <h3 class="text-2xl p-0 m-0 precio">
                         <span>Mayor: </span>
@@ -156,7 +156,7 @@
 
                         </h3>
 
-                        <span v-if="quantity < 500">Para compras de 500 unidades en adelante te faltan <b>{{ 500 - quantity }}</b> </span>
+                        <span v-if="quantity < 500">Para compras de 500 unidades en adelante </span>
                       </div>
 
 
@@ -167,7 +167,7 @@
 
                     <div class="flex-center-gap" style="margin: 1rem 0;">
 
-                      <div v-if="quantity < 700">
+                      <div v-if="quantity < 1000">
 
                         <h3 class="text-2xl p-0 m-0 precio">
                           <span>Distribuidor: </span>
@@ -184,7 +184,7 @@
 
 
                         </h3>
-                        <span>Para compras de 700 unidades en adelante te faltan <b>{{ 700 - quantity }}</b> </span>
+                        <span>Para compras de 1000 unidades en adelante </span>
                       </div>
                      <Tag v-else>
 
@@ -521,11 +521,11 @@ watch(
   const qty = quantity.value;
   let precioUnitario = store.currentProduct.minor;
 
-  // Si la cantidad es mayor o igual a 700, se usa el precio de distribuidor
-  if (qty >= 700) {
+  // Si la cantidad es mayor o igual a 1000, se usa el precio de distribuidor
+  if (qty >= 1000) {
     precioUnitario = store.currentProduct.distribuidor;
   }
-  // Si es mayor o igual a 500 pero menor a 700, se usa el precio mayor
+  // Si es mayor o igual a 500 pero menor a 1000, se usa el precio mayor
   else if (qty >= 500) {
     precioUnitario = store.currentProduct.mayor;
   }

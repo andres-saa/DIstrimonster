@@ -97,7 +97,7 @@ export const usecartStore = defineStore('salchi_super_cart_web4433d', {
 
       // Determinar el precio base según la cantidad
       let basePrice;
-      if (cantidad >= 700) {
+      if (cantidad >= 1000) {
         basePrice = Number(distribuidor) || 0;
       } else if (cantidad >= 500) {
         basePrice = Number(mayor) || 0;

@@ -7,9 +7,7 @@
 
       <div style="margin: auto;max-width: 800px;">
           <div class="title " style="  margin: 3rem .5rem">
-              <Tag severity="success " class="advertice"> El tiempo promedio de entrega es de 60 a 75 minutos, porvaor
-                  tengalo en cuenta
-                  antes de ordenar</Tag>
+              <Tag severity="success " class="advertice">   </Tag>
           </div>
       </div>
       <div class="form-grid">

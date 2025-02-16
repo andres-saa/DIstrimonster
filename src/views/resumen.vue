@@ -95,16 +95,19 @@
               <div class="col-6 my-0 py-0">
                   <span><b>Total</b></span>
               </div>
-              <div class="col-6 my-0 text-right py-0 text-end" v-if="siteStore.location.neigborhood.delivery_price">
+              <div class="col-6 my-0 text-right py-0 text-end" >
                   <!-- {{ siteStore.location }} -->
                   <span><b>{{ formatoPesosColombianos(
                       store.cartTotal +
                       siteStore.location.neigborhood.delivery_price
                           ) }}</b></span>
               </div>
+<span></span>
 
-              <Button @click="siteStore.visibles.currentSite = true" v-else label="Calcular mi domicilio"
-                  style="min-width: max-content;"></Button>
+                <Button @click="siteStore.visibles.currentSite = true" v-if="siteStore.location.neigborhood.delivery_price <= 0" label="Calcular mi domicilio"
+                style="min-width: max-content;"></Button>
+
+
           </div>
 
           <!-- Botones de navegación y acciones -->
@@ -179,7 +182,7 @@ const user = useUserStore();
 const calcularPrecioProducto = (product) => {
   const cantidad = product.pedido_cantidad;
 
-  if (cantidad >= 700) {
+  if (cantidad >= 1000) {
     return product.distribuidor * cantidad;
   } else if (cantidad >= 500) {
     return product.mayor * cantidad;

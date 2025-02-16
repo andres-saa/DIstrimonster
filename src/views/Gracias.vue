@@ -10,12 +10,12 @@
                   class="text-2xl">ID DEL PEDIDO</span> <br> #{{ store.last_order }}</p>
 
 
-
+<!--
 
           <p class="text-2xl text-center my-3 p-3"
               style=" border-radius: .3rem; background-color: var(--p-primary-color); padding: 1rem; color: white;">
               Hemos recibido tu
-              pedido y en breve será despachado</p>
+              pedido y en breve será despachado</p> -->
 
 <div>
 
@@ -40,16 +40,22 @@
           <div style="display: flex;flex-direction: column;gap: 1rem;">
 
 
-              <router-link to="/rastrear-pedido">
+              <!-- <router-link to="/rastrear-pedido">
                   <Button class="mt-3" icon="pi " iconPos="right" severity="warning"
                       style="font-weight: bold; width: 100%;" label="PUEDES RASTREARLO AQUI"></Button>
               </router-link>
-
+ -->
 
               <a v-if="user.user.payment_method_option.id == 6" :href="whatsappUrl" target="_blank"> <Button
                       icon="pi pi-whatsapp" severity="danger" class="wsp"
                       style="font-weight: bold;background-color: #00b66c; border: none; width: 100%;"
                       label="REALIZAR TRANSFERENCIA"></Button>
+              </a>
+
+              <a v-else :href="whatsappUrl2" target="_blank"> <Button
+                      icon="pi pi-whatsapp" severity="danger" class="wsp"
+                      style="font-weight: bold;background-color: #00b66c; border: none; width: 100%;"
+                      label="CONFIRMAR PEDIDO"></Button>
               </a>
               <router-link to="/">
                   <Button icon="pi pi-arrow-left" severity="danger" outlined
@@ -76,6 +82,7 @@ import router from '@/router';
 const site = useSitesStore();
 import { formatoPesosColombianos } from '@/service/utils/formatoPesos';
 const text = ref('');
+const text2 = ref('');
 const store = usecartStore();
 const user = useUserStore()
 import { useReportesStore } from '@/store/ventas';
@@ -110,6 +117,15 @@ onMounted(() => {
 
   console.log(text.value);
 
+
+  text2.value = `Hola soy *${user.user.name.toUpperCase()}* 🤗 acabo de hacer el siguiente pedido en la página web. El número de la orden es *#${store.last_order}*.\n
+
+  *Escribo para confirmar mi pedido*\n
+
+  *Muchas Gracias* 🙏`;
+
+  console.log(text2.value);
+
 });
 
 
@@ -119,6 +135,15 @@ const whatsappUrl = computed(() => {
   const urlParams = new URLSearchParams({
       phone: '573053447255',
       text: text.value
+  });
+  return `${baseUrl}?${urlParams.toString()}`;
+});
+
+const whatsappUrl2 = computed(() => {
+  const baseUrl = 'https://api.whatsapp.com/send';
+  const urlParams = new URLSearchParams({
+      phone: '573053447255',
+      text: text2.value
   });
   return `${baseUrl}?${urlParams.toString()}`;
 });

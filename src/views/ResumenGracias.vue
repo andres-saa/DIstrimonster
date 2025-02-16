@@ -134,7 +134,7 @@ const agrupados = ref({});
 const calcularPrecioProducto = (product) => {
   const cantidad = product.pedido_cantidad;
 
-  if (cantidad >= 700) {
+  if (cantidad >= 1000) {
     return product.distribuidor * cantidad;
   } else if (cantidad >= 500) {
     return product.mayor * cantidad;

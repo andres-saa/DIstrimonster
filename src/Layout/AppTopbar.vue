@@ -19,12 +19,6 @@
           :class="route.fullPath == '/menu' ? 'logo2' : 'logo'" :src="`${URI}/read-photo-product/iX6UiE6e`" alt="Logo" />
       </div>
 
-      <div class="site-info-status">
-
-          <Tag v-if="siteStore.status?.status == 'open'" class="status-tag">Abierto</Tag>
-          <Tag v-else="siteStore.status?.status" class="closed-tag">Cerrado</Tag>
-          <!-- <Tag v-else="siteStore.status?.status" class="closed-tag">Seleccionar sede</Tag> -->
-        </div>
 
       <!-- <i class="pi pi-map-marker" @click="siteStore.visibles.currentSite = true"></i> -->
       <!-- <div class="site-info" @click="siteStore.visibles.currentSite = true">

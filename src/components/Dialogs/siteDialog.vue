@@ -38,13 +38,13 @@
                 <!-- Vista Previa de la Sede -->
                 <div class="image-container">
                     <img v-if="currenNeigborhood?.site_id"
-                        :src="`${URI}/read-product-image/600/site-${currenNeigborhood?.site_id}`"
+                        :src="`${URI}/read-photo-product/iX6UiE6e`"
                         :class="{ 'default-image': currenNeigborhood.site?.name === 'default' }"
                         alt="Vista previa de la sede" />
 
                     <div v-if="currenNeigborhood?.site_id" class="image-overlay">
                         <p class="site-info">
-                            <span class="brand-name">SALCHIMONSTER</span>
+                            <!-- <span class="brand-name">Distrimonster </span> -->
                             <span class="site-name">{{ currentSite?.site_name }}</span>
                         </p>
                     </div>
@@ -259,7 +259,7 @@ onMounted(() => {
 .image-container img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     border: 1px solid #fff;
     border-radius: 0.2rem;
     background-color: #fff;

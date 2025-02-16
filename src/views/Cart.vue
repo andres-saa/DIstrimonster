@@ -34,14 +34,14 @@
                           <div class="cart-product-info-inner">
 <b>
                             <div style="display: flex;justify-content: end;">
-                              <div v-if="product.pedido_cantidad >= 500 && product.pedido_cantidad < 700">
+                              <div v-if="product.pedido_cantidad >= 500 && product.pedido_cantidad < 1000">
                                 <Tag  style="width: max-content; margin-right: .5rem;"> Precio por mayor</Tag>
 
                                 {{ formatoPesosColombianos(product.mayor) }}
 
 
                               </div>
-                              <div v-else-if="product.pedido_cantidad >= 700">
+                              <div v-else-if="product.pedido_cantidad >= 1000">
                                 <Tag  style="width: max-content;margin-right: .5rem;"> Precio de distribuidor</Tag>
                                 {{ formatoPesosColombianos(product.distribuidor) }}
 
@@ -77,7 +77,7 @@
 
                       <h4 class="p-0 m-0 " style="margin-left: 1rem;">
                         <b>
-                        <h3 v-if="product.pedido_cantidad >= 700">
+                        <h3 v-if="product.pedido_cantidad >= 1000">
                           {{ formatoPesosColombianos(product.distribuidor * product.pedido_cantidad) }}
                         </h3>
                         <h4 v-else-if="product.pedido_cantidad >= 500">
