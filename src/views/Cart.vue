@@ -23,6 +23,14 @@
                           <img class="cart-product-img p-1"
                           :src="`${URI}/get-image?image_url=${product.productogeneral_urlimagen}`" alt="" />
 
+                          <div style="display: flex;gap: .5rem;margin-bottom: .5rem; width: min-content;">
+                              <Tag severity="success"  style="min-width: max-content;">{{  product.pedido_cantidad}} {{product.pedido_cantidad < 2? 'Unidad': 'Unidades'}}</Tag>
+
+
+                            <Tag severity="success"   style="min-width: max-content;">{{ product.kilos * product.pedido_cantidad}} Kg</Tag>
+
+
+                            </div>
 
 
                       <Button class="cart-delete-product-button ml-2"

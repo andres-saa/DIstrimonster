@@ -15,32 +15,41 @@
 
 
           <div class="form-column">
-
+              Nombre
               <div class="form-group">
                   <InputText id="username" placeholder="NOMBRE" v-model="user.user.name" />
               </div>
+              Sede donde vas a recoger
 
-              <div class="form-group">
-                  <InputText @click="siteStore.setVisible('currentSite', true)"
-                      :modelValue="siteStore.location.neigborhood.name" id="neighborhood" placeholder="Barrio"
-                      readonly />
+              <div class="form-group" @click="siteStore.setVisible('currentSite', true)" style="background-color: white;border: 1px solid #00000040; padding: 1rem;border-radius: .3rem;">
+
+                      <div>
+                      <b>Ciudad:</b> {{ siteStore.location.city.city_name }} <br>
+                      <b> Sede: </b> {{ siteStore.location.site.site_name }} <br>
+                      <b>Direccio'n: </b> {{ siteStore.location.site.site_address }} <br>
+                      </div>
               </div>
 
               <!-- {{ siteStore.visibles }} -->
 
-              <div class="form-group">
+              <!-- <div class="form-group">
                   <InputText v-model="user.user.address" id="address" placeholder="DIRECCION" />
-              </div>
+              </div> -->
+              Numero de telefono
               <div class="form-group">
                   <InputMask v-model="user.user.phone_number" id="phone_number" mask="999 999 9999"
                       placeholder="TELEFONO" />
               </div>
+
+              Metodo de pago
               <div class="form-group">
                   <Select style="width: 100%;" v-model="user.user.payment_method_option" id="payment_method"
                       placeholder="METODO DE PAGO" :options="payment_method_options.filter(p => [6,5,6,7,8,].includes(p.id) )" optionLabel="name" />
               </div>
+              Si gustas nos puedes dejar una nota
               <Textarea v-model="store.cart.order_notes" class="order-notes" placeholder="NOTAS:"></Textarea>
           </div>
+
           <resumen class="resumen-column"></resumen>
 
       </div>
@@ -71,22 +80,22 @@ const payment_method_options = ref([])
 onMounted(async () => {
   payment_method_options.value = await fetchService.get(`${URI}/payment_methods`)
 
-  if (user.user.payment_method_option?.id != 7)
-      siteStore.setNeighborhoodPrice()
-  else {
-      siteStore.setNeighborhoodPriceCero()
-  }
+  // if (user.user.payment_method_option?.id != 7)
+  //     siteStore.setNeighborhoodPrice()
+  // else {
+  //     siteStore.setNeighborhoodPriceCero()
+  // }
 })
 
 
 watch(() => user.user.payment_method_option, (new_val) => {
 
-  if (new_val.id == 7) {
-      siteStore.current_delivery = siteStore.location.neigborhood.delivery_price
-      siteStore.location.neigborhood.delivery_price = 0
-  } else {
-      siteStore.setNeighborhoodPrice()
-  }
+  // if (new_val.id == 7) {
+  //     siteStore.current_delivery = siteStore.location.neigborhood.delivery_price
+  //     siteStore.location.neigborhood.delivery_price = 0
+  // } else {
+  //     siteStore.setNeighborhoodPrice()
+  // }
 })
 </script>
 

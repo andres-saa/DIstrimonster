@@ -68,13 +68,20 @@
 
       <div class="details" style="">
         <h3 class="text description">DESCRIPCION</h3>
-        <p class=" " style="margin: 1rem 0;">
+
+        <p class=" " style="margin: .5rem 0;">
           {{ store.currentProduct.productogeneral_descripcionweb?.toLowerCase() }}
         </p>
 
 
+<div style="display: flex;gap: .5rem;margin-bottom: .5rem; width: min-content;">
+  <Tag severity="success"  style="min-width: max-content;">{{  quantity}} {{quantity < 2? 'Unidad': 'Unidades'}}</Tag>
 
 
+<Tag severity="success"   style="min-width: max-content;">{{ store.currentProduct.kilos * quantity}} Kg</Tag>
+
+
+</div>
 
 
         <div class="flex-center-gap">

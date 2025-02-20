@@ -32,10 +32,10 @@
 
 
               <div class="col-6 my-0 text-right py-2">
-  <h6 class="text-end">
-    {{ formatoPesosColombianos(calcularPrecioProducto(product)) }}
-  </h6>
-</div>
+                <h6 class="text-end">
+                  {{ formatoPesosColombianos(calcularPrecioProducto(product)) }}
+                </h6>
+              </div>
 
 
               </div>
@@ -62,49 +62,25 @@
 
           <!-- Subtotales y totales -->
           <div class="grid summary-grid">
-              <div class="col-6 my-0 py-0">
-                  <span><b>Subtotal</b></span>
-              </div>
-              <div class="col-6 my-0 text-right py-0 text-end">
-                  <span>
-                      <b>{{ formatoPesosColombianos(store.cartTotal) }}</b>
-                  </span>
-              </div>
 
-              <div class="col-6 my-0 py-0">
-                  <span :style="siteStore.location.neigborhood.delivery_price == 0
-                      ? 'text-decoration: line-through;'
-                      : ''
-                      "><b>Domicilio</b></span>
-              </div>
-              <div class="col-6 my-0 text-right py-0 text-end">
-                  <!-- {{ siteStore.location }} -->
-                  <span v-if="siteStore.location.neigborhood.delivery_price == 0" class="primary-color">
-                      <b>
-                          {{
-                              route.path.includes('reservas')
-                                  ? 'Ir a la sede'
-                                  : 'Recoger en local'
-                          }}
-                      </b>
-                  </span>
-                  <span v-else-if="siteStore.location.neigborhood.delivery_price">
-                      <b>{{ formatoPesosColombianos(siteStore.location.neigborhood.delivery_price) }}</b>
-                  </span>
-              </div>
+
+
               <div class="col-6 my-0 py-0">
                   <span><b>Total</b></span>
               </div>
-              <div class="col-6 my-0 text-right py-0 text-end" v-if="siteStore.location.neigborhood.delivery_price">
+              <div class="col-6 my-0 text-right py-0 text-end" >
                   <!-- {{ siteStore.location }} -->
                   <span><b>{{ formatoPesosColombianos(
-                      store.cartTotal +
-                      siteStore.location.neigborhood.delivery_price
+                      store.cartTotal
                           ) }}</b></span>
               </div>
+<span></span>
 
-              <Button @click="siteStore.visibles.currentSite = true" v-else label="Calcular mi domicilio"
-                  style="min-width: max-content;"></Button>
+
+          </div>
+
+          <div>
+
           </div>
 
 
@@ -122,14 +98,15 @@ import { onMounted, ref, watch } from 'vue';
 import { useUserStore } from '@/store/user';
 import { Button } from 'primevue';
 import { Tag } from 'primevue';
+import { useReportesStore } from '@/store/ventas';
+
+const reportes = useReportesStore()
 
 const sending = ref(false);
 const route = useRoute();
 const store = usecartStore();
 const siteStore = useSitesStore();
 const user = useUserStore();
-
-const agrupados = ref({});
 
 const calcularPrecioProducto = (product) => {
   const cantidad = product.pedido_cantidad;
@@ -142,6 +119,7 @@ const calcularPrecioProducto = (product) => {
     return product.pedido_precio * cantidad;
   }
 };
+const agrupados = ref({});
 
 // const update = () => {
 //     agrupados.value = store.cart.additions.reduce((acumulador, elemento) => {
@@ -155,22 +133,22 @@ const calcularPrecioProducto = (product) => {
 // };
 
 onMounted(() => {
-    // update();
+  // update();
 
-    if (user.user.payment_method_option?.id != 7 && !route.path.includes('reservas'))
-        siteStore.setNeighborhoodPrice();
-    else {
-        siteStore.setNeighborhoodPriceCero();
-    }
+  // if (user.user.payment_method_option?.id != 7 && !route.path.includes('reservas'))
+  //     siteStore.setNeighborhoodPrice();
+  // else {
+  //     siteStore.setNeighborhoodPriceCero();
+  // }
 });
 
-watch(
-    () => store.cart.additions,
-    () => {
-        update();
-    },
-    { deep: true }
-);
+// watch(
+//   () => store.cart.additions,
+//   () => {
+//       update();
+//   },
+//   { deep: true }
+// );
 </script>
 
 <style scoped>
@@ -178,122 +156,122 @@ watch(
 
 /* Contenedor “sticky” del resumen */
 .sticky-summary {
-    position: sticky;
-    padding: 1rem;
-    max-height: min-content;
-    background-color: white;
-    box-shadow: 0 1rem 1rem #00000020;
-    top: 5rem;
-    border-radius: 0.5rem;
-    z-index: 1000;
+  position: sticky;
+  padding: 1rem;
+  max-height: min-content;
+  background-color: white;
+  box-shadow: 0 1rem 1rem #00000020;
+  top: 5rem;
+  border-radius: 0.5rem;
+  z-index: 1000;
 }
 
 /* Línea de cada producto (display: flex; justify-content: space-between) */
 .product-line {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
 /* Span con min-width: 3rem; y width: 100% */
 .span-minwidth {
-    min-width: 3rem;
-    width: 100%;
+  min-width: 3rem;
+  width: 100%;
 }
 
 /* Forzar texto a “end” */
 .text-end {
-    text-align: end;
+  text-align: end;
 }
 
 /* Contenedor de adiciones agrupadas */
 .addition-group {
-    position: relative;
-    border-radius: 0.3rem;
+  position: relative;
+  border-radius: 0.3rem;
 }
 
 /* Cada ítem de adicional */
 .addition-item {
-    display: flex;
-    margin-left: 1rem;
-    gap: 1rem;
-    align-items: center;
+  display: flex;
+  margin-left: 1rem;
+  gap: 1rem;
+  align-items: center;
 }
 
 /* Contenedor interno de ítem adicional */
 .addition-item-inner {
-    display: flex;
-    width: 100%;
-    gap: 1rem;
-    justify-content: space-between;
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+  justify-content: space-between;
 }
 
 /* Grid para los subtotales y totales */
 .summary-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 /* Texto con color primario */
 .primary-color {
-    color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 /* Ajustes de fuente para la descripción base (opcional) */
 .font-weight-400 {
-    font-weight: 400;
+  font-weight: 400;
 }
 
 /* Botones y clases genéricas */
 .button-common {
-    outline: none;
-    margin: .5rem 0;
+  outline: none;
+  margin: .5rem 0;
 }
 
 .button-no-outline {
-    outline: none;
+  outline: none;
 }
 
 .button-no-border {
-    border: none;
+  border: none;
 }
 
 .button-fullwidth {
-    width: 100%;
+  width: 100%;
 }
 
 .button-bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .button-transparent {
-    background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .button-black {
-    background-color: black;
+  background-color: black;
 }
 
 /* Tag de aviso de “Restaurante cerrado” */
 .tag-fullheight {
-    width: 100%;
-    height: 2.5rem;
+  width: 100%;
+  height: 2.5rem;
 }
 
 /* Estilos globales ya existentes */
 .p-shadow {
-    box-shadow: 0 0.3rem 5px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0.3rem 5px rgba(0, 0, 0, 0.15);
 }
 
 button {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 
 * {
-    text-transform: uppercase;
-    font-size: 0.9rem;
+  text-transform: uppercase;
+  font-size: 0.9rem;
 }
 
 *::first-letter {
-    text-transform: uppercase;
+  text-transform: uppercase;
 }
 </style>

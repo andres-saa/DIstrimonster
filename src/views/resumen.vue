@@ -62,50 +62,46 @@
 
           <!-- Subtotales y totales -->
           <div class="grid summary-grid">
+
+
+
               <div class="col-6 my-0 py-0">
                   <span><b>Subtotal</b></span>
               </div>
-              <div class="col-6 my-0 text-right py-0 text-end">
-                  <span>
-                      <b>{{ formatoPesosColombianos(store.cartTotal) }}</b>
-                  </span>
+              <div class="col-6 my-0 text-right py-0 text-end" >
+                  <!-- {{ siteStore.location }} -->
+                  <span><b>{{ formatoPesosColombianos(
+                      store.cartTotal
+                          ) }}</b></span>
               </div>
 
+
               <div class="col-6 my-0 py-0">
-                  <span :style="siteStore.location.neigborhood.delivery_price == 0
-                      ? 'text-decoration: line-through;'
-                      : ''
-                      "><b>Domicilio</b></span>
+                  <span><b>Domicilio <span style="color: var(--p-primary-color)"> ($ 300 por kilo)</span></b></span>
               </div>
-              <div class="col-6 my-0 text-right py-0 text-end">
+              <div class="col-6 my-0 text-right py-0 text-end" >
                   <!-- {{ siteStore.location }} -->
-                  <span v-if="siteStore.location.neigborhood.delivery_price == 0" class="primary-color">
-                      <b>
-                          {{
-                              route.path.includes('reservas')
-                                  ? 'Ir a la sede'
-                                  : 'Recoger en local'
-                          }}
-                      </b>
-                  </span>
-                  <span v-else-if="siteStore.location.neigborhood.delivery_price">
-                      <b>{{ formatoPesosColombianos(siteStore.location.neigborhood.delivery_price) }}</b>
-                  </span>
+                  <span><b>{{ formatoPesosColombianos(
+                      300 * store.cart[0].kilos
+                          ) }}</b></span>
               </div>
+
               <div class="col-6 my-0 py-0">
                   <span><b>Total</b></span>
               </div>
               <div class="col-6 my-0 text-right py-0 text-end" >
                   <!-- {{ siteStore.location }} -->
                   <span><b>{{ formatoPesosColombianos(
-                      store.cartTotal +
-                      siteStore.location.neigborhood.delivery_price
+                      store.cartTotal
                           ) }}</b></span>
               </div>
+
+
+
 <span></span>
 
-                <Button @click="siteStore.visibles.currentSite = true" v-if="siteStore.location.neigborhood.delivery_price <= 0" label="Calcular mi domicilio"
-                style="min-width: max-content;"></Button>
+                <!-- <Button @click="siteStore.visibles.currentSite = true" v-if="siteStore.location.neigborhood.delivery_price <= 0" label="Calcular mi domicilio"
+                style="min-width: max-content;"></Button> -->
 
 
           </div>
@@ -206,20 +202,20 @@ const agrupados = ref({});
 onMounted(() => {
   // update();
 
-  if (user.user.payment_method_option?.id != 7 && !route.path.includes('reservas'))
-      siteStore.setNeighborhoodPrice();
-  else {
-      siteStore.setNeighborhoodPriceCero();
-  }
+  // if (user.user.payment_method_option?.id != 7 && !route.path.includes('reservas'))
+  //     siteStore.setNeighborhoodPrice();
+  // else {
+  //     siteStore.setNeighborhoodPriceCero();
+  // }
 });
 
-watch(
-  () => store.cart.additions,
-  () => {
-      update();
-  },
-  { deep: true }
-);
+// watch(
+//   () => store.cart.additions,
+//   () => {
+//       update();
+//   },
+//   { deep: true }
+// );
 </script>
 
 <style scoped>
@@ -279,6 +275,7 @@ watch(
 /* Grid para los subtotales y totales */
 .summary-grid {
   display: grid;
+  align-items: center;
   grid-template-columns: repeat(2, 1fr);
 }
 

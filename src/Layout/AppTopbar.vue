@@ -133,7 +133,7 @@ const socialLinks = [
 // Definir los botones de navegación
 const buttons = [
   { name: 'Domicilios', to: '/', icon: 'fa-solid fa-bars' },
-  // { name: 'Sedes', to: '/sedes', icon: 'fa-solid fa-building' },
+  { name: 'Sedes', to: '/sedes', icon: 'fa-solid fa-building' },
   { name: 'Precios de la semana', to: '/menu', icon: 'fa-solid fa-list' },
   // { name: 'mi cotizacion', to: '/cotizacion', icon: 'fa-solid fa-list' },
 
@@ -158,7 +158,7 @@ const isButtonActive = (button) => route.fullPath === button.to;
 // Mapeo de rutas a clases de estilo
 const estilosPorRuta = {
   '/': 'barra-clara',
-  '/sedes': 'barra-sedes',
+  '/sedes': 'barra-clara',
   '/menu': 'barra-carta',
   '/rastrear-pedido': 'barra-clara',
   '/franquicias': 'barra-clara',

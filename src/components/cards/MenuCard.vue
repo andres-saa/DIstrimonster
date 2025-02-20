@@ -97,6 +97,9 @@
         </div>
 
 
+        <Tag style="position: absolute;bottom: 0;width: 5rem; border-radius: 0 .5rem 0 0 ;">{{ props.product.kilos }} Kg</Tag>
+
+
     </div>
 
 
@@ -109,6 +112,7 @@ import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { usecartStore } from '@/store/shoping_cart';
 import { Button } from 'primevue';
 import { useRoute } from 'vue-router';
+import {Tag} from 'primevue';
 import router from '@/router';
 import { URI } from '@/service/conection';
 const route = useRoute()
@@ -299,6 +303,7 @@ onBeforeUnmount(() => {
     gap: 1rem;
     /* Spacing between grid items */
 
+    overflow: hidden;
     height: 100%;
     width: 100%;
     margin: 0;

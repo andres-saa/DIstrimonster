@@ -26,15 +26,13 @@ const preparar_orden = () => {
   const site_id = site.location.site.site_id;
   const pe_site_id = site.location.site.pe_site_id;
   const payment_method_id = user.user.payment_method_option?.id;
-  const delivery_price =
-    payment_method_id === 7 ? 0 : site.location.neigborhood.delivery_price;
+  const delivery_price = 0;
 
   const order_notes = cart.cart.order_notes;
   const user_data = {
     user_name: user.user.name,
     user_phone: user.user.phone_number?.split(" ").join(""),
-    user_address:
-      ` ${user.user.address} ${site.location?.neigborhood?.name}` || "",
+    user_address: `${site.location?.site?.site_address}` || "",
   };
 
   const order = {
@@ -234,9 +232,7 @@ function validateOrder(order) {
     !order.user_data.user_name ||
     order.user_data.user_name.trim() == "" ||
     !order.user_data.user_phone ||
-    order.user_data.user_phone.trim() == "" ||
-    !order.user_data.user_address ||
-    order.user_data.user_address.trim() == ""
+    order.user_data.user_phone.trim() == ""
   ) {
     alert("Sus datos estan incompletos por favor reviselos");
     cart.sending_order = false;

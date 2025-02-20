@@ -177,6 +177,7 @@ export const usecartStore = defineStore('salchi_super_cart_web4433d', {
           "pedido_base_price": this.getProductPrice(product),
           "minor":product.minor,
           "mayor":product.mayor,
+          "kilos":product.kilos,
           "distribuidor":product.distribuidor,
           "pedido_productoid": this.getProductId(product),
           "lista_productocombo": product.lista_productobase?  product.lista_productobase.map( product => {
