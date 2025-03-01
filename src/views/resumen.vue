@@ -75,7 +75,6 @@
                           ) }}</b></span>
               </div>
 
-
               <div class="col-6 my-0 py-0">
                   <span><b>Domicilio <span style="color: var(--p-primary-color)"> ($ 300 por kilo)</span></b></span>
               </div>

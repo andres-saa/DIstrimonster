@@ -48,7 +48,8 @@ const preparar_orden = () => {
     user_data: user_data,
     order_aditionals: [],
     pe_json: order_products,
-    total: 0
+    total: 0,
+    order_type_id: 1,
   };
   console.log(order)
   return order
