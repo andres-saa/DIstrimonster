@@ -188,7 +188,6 @@ import { InputText } from 'primevue';
 import { InputMask } from 'primevue';
 import { Dialog } from 'primevue';
 import { Select } from 'primevue';
-import Holidays from 'date-holidays';
 import { fetchService } from '@/service/utils/fetchService';
 import { URI } from '@/service/conection';
 
