@@ -40,8 +40,8 @@ const preparar_orden = () => {
 
   const order_notes = cart.cart.order_notes;
   const user_data = {
-    user_name: user.user.name,
-    user_phone: user.user.phone_number?.split(" ").join(""),
+    user_name: user.user.user_name,
+    user_phone: user.user.user_phone?.split(" ").join(""),
     user_address: `${site.location?.site?.site_address} - ${site.location.site.site_name}` || "",
   };
 
@@ -62,6 +62,8 @@ const preparar_orden = () => {
     pe_json: order_products,
     total: 0,
     order_type_id: user.user.order_type?.id,
+    sede_recoger:`${site.location?.site?.site_address} - ${site.location.site.site_name}` || "",
+
   };
   console.log(order)
   return order
