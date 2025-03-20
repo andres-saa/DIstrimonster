@@ -66,7 +66,7 @@
 
 
               <div class="col-6 my-0 py-0">
-                  <span><b>Total</b></span>
+                  <span><b>Subtotal</b></span>
               </div>
               <div class="col-6 my-0 text-right py-0 text-end" >
                   <!-- {{ siteStore.location }} -->
@@ -74,16 +74,40 @@
                       store.cartTotal
                           ) }}</b></span>
               </div>
+
+              <div class="col-6 my-0 py-0">
+                  <span><b>Domicilio <span style="color: var(--p-primary-color)"> ($ 300 por kilo)</span></b></span>
+              </div>
+              <div class="col-6 my-0 text-right py-0 text-end" >
+                  <!-- {{ siteStore.location }} -->
+                  <span><b>{{ formatoPesosColombianos(
+                     totalProductos
+                          ) }}</b></span>
+              </div>
+
+              <div class="col-6 my-0 py-0">
+                  <span><b>Total</b></span>
+              </div>
+              <div class="col-6 my-0 text-right py-0 text-end" >
+                  <!-- {{ siteStore.location }} -->
+                  <span><b>{{ formatoPesosColombianos(
+                      store.cartTotal + totalProductos
+                          ) }}</b></span>
+              </div>
+
+
+            
+
+
 <span></span>
 
+                <!-- <Button @click="siteStore.visibles.currentSite = true" v-if="siteStore.location.neigborhood.delivery_price <= 0" label="Calcular mi domicilio"
+                style="min-width: max-content;"></Button> -->
+
 
           </div>
 
-          <div>
-
-          </div>
-
-
+        
       </div>
   </div>
 </template>
@@ -94,13 +118,37 @@ import { usecartStore } from '@/store/shoping_cart';
 import { useSitesStore } from '@/store/site';
 import { useRoute } from 'vue-router';
 import { orderService } from '@/service/order/orderService';
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch,computed } from 'vue';
 import { useUserStore } from '@/store/user';
 import { Button } from 'primevue';
 import { Tag } from 'primevue';
 import { useReportesStore } from '@/store/ventas';
 
 const reportes = useReportesStore()
+
+
+const totalProductos = computed(() => {
+
+
+  if ( siteStore.location.site.city_id == 10 ){
+    return 0
+  }
+
+
+  console.log(store.cart)
+  return store.cart.reduce((acc, item) => {
+    // item.kilos       => número de kilos
+    // item.product.quantity => cantidad de ese producto
+    // 300             => factor multiplicador fijo
+    return acc + (300 * item.kilos * item.pedido_cantidad )
+  }, 0)
+})
+
+
+
+
+
+
 
 const sending = ref(false);
 const route = useRoute();
@@ -208,6 +256,7 @@ onMounted(() => {
 /* Grid para los subtotales y totales */
 .summary-grid {
   display: grid;
+  align-items: center;
   grid-template-columns: repeat(2, 1fr);
 }
 

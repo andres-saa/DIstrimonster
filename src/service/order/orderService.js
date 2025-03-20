@@ -18,27 +18,37 @@ const preparar_orden = () => {
   user.user.was_reserva = false;
   cart.sending_order = true;
   const order_products = cart.cart
-
-  // console.log(order_products);
-
-
+  const delivery_horaentrega  =  cart.delivery_horaentrega
 
   const site_id = site.location.site.site_id;
   const pe_site_id = site.location.site.pe_site_id;
   const payment_method_id = user.user.payment_method_option?.id;
-  const delivery_price = 0;
+
+  if (!payment_method_id){
+    alert('selecciona un metodo de pago')
+    return
+  }
+
+  if (!user.user?.order_type.id){
+    alert('selecciona un metodo de entrega')
+    return
+  }
+
+  const delivery_price = cart.cart.reduce((acc, item) => {
+    return acc + (300 * item.kilos * item.pedido_cantidad )
+  }, 0);
 
   const order_notes = cart.cart.order_notes;
   const user_data = {
     user_name: user.user.name,
     user_phone: user.user.phone_number?.split(" ").join(""),
-    user_address: `${site.location?.site?.site_address}` || "",
+    user_address: `${site.location?.site?.site_address} - ${site.location.site.site_name}` || "",
   };
 
   const order = {
     order_products: [],
     // "site_id": site_id,
-    site_id: 31,
+    site_id: 32,
     pe_site_id: 12,
     // "pe_site_id":pe_site_id,
     delivery_person_id: 4,
@@ -46,10 +56,12 @@ const preparar_orden = () => {
     delivery_price: delivery_price,
     order_notes: order_notes || "SIN NOTAS",
     user_data: user_data,
+    user_id:user.user.user_id,
     order_aditionals: [],
+    delivery_horaentrega:delivery_horaentrega,
     pe_json: order_products,
     total: 0,
-    order_type_id: 1,
+    order_type_id: user.user.order_type?.id,
   };
   console.log(order)
   return order
@@ -86,6 +98,7 @@ const preparar_orden_reserva = () => {
     delivery_price: 0,
     order_notes: order_notes || "SIN NOTAS",
     user_data: user_data,
+    user_id:user.user.id,
     order_aditionals: [],
   };
 
@@ -229,16 +242,7 @@ function validateOrder(order) {
   //   return false;
   // }
 
-  if (
-    !order.user_data.user_name ||
-    order.user_data.user_name.trim() == "" ||
-    !order.user_data.user_phone ||
-    order.user_data.user_phone.trim() == ""
-  ) {
-    alert("Sus datos estan incompletos por favor reviselos");
-    cart.sending_order = false;
-    return false;
-  }
+
 
   if (!order.site_id || order.delivery_price == null) {
     alert("Site information is missing. Please select a valid site.");

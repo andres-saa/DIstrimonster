@@ -24,7 +24,7 @@
                           :src="`${URI}/get-image?image_url=${product.productogeneral_urlimagen}`" alt="" />
 
                           <div style="display: flex;gap: .5rem;margin-bottom: .5rem; width: min-content;">
-                              <Tag severity="success"  style="min-width: max-content;">{{  product.pedido_cantidad}} {{product.pedido_cantidad < 2? 'Unidad': 'Unidades'}}</Tag>
+                              <Tag severity="success"  style="min-width: max-content;">{{  product.pedido_cantidad}} {{product.pedido_cantidad < 2? 'Pack': 'Packs'}}</Tag>
 
 
                             <Tag severity="success"   style="min-width: max-content;">{{ product.kilos * product.pedido_cantidad}} Kg</Tag>
@@ -45,19 +45,19 @@
                               <div v-if="product.pedido_cantidad >= 500 && product.pedido_cantidad < 1000">
                                 <Tag  style="width: max-content; margin-right: .5rem;"> Precio por mayor</Tag>
 
-                                {{ formatoPesosColombianos(product.mayor) }}
+                                {{ formatoPesosColombianos(product.mayor / product.kilos) }} /Kg
 
 
                               </div>
                               <div v-else-if="product.pedido_cantidad >= 1000">
                                 <Tag  style="width: max-content;margin-right: .5rem;"> Precio de distribuidor</Tag>
-                                {{ formatoPesosColombianos(product.distribuidor) }}
+                                {{ formatoPesosColombianos(product.distribuidor / product.kilos) }} /kg
 
                               </div>
 
                               <div v-else>
                                 <Tag  style="width: max-content;margin-right: .5rem;"> Al detal</Tag>
-                                {{ formatoPesosColombianos(product.minor) }}
+                                {{ formatoPesosColombianos(product.minor / product.kilos) }} /kg
 
                               </div>
 
@@ -73,9 +73,9 @@
                                           @click="store.decrementProduct(product.signature)"
                                           icon="pi pi-minus" severity="danger"></Button>
 
-                                      <!-- <span class="cart-product-quantity-label" readonly>{{ product.pedido_cantidad }}</span> -->
-                                      <InputNumber class="cart-product-quantity-label" :max-fraction-digits="0" min="1" :inputStyle="{ width: '100%',maxWidth:'10rem', height: '100%',textAlign:'center', borderRadius:'0' }" style="height: 2rem;" type="number"  v-model="product.pedido_cantidad"
-                                      />
+                                  
+                                      <InputNumber :suffix="` pack${product.pedido_cantidad > 1? 's': ''} (${product.pedido_cantidad * product.kilos}kg)`" :max-fraction-digits="0" min="1" :inputStyle="{ width: '100%',maxWidth:'15rem', height: '2rem',borderRadius:'0',textAlign:'center' }" style="height: 100%;width: 100%;"   v-model="product.pedido_cantidad"
+                                        class="cart-addition-quantity-label p-0 text-center"/>
 
                                       <Button class="cart-quantity-btn-plus"
                                           @click=" store.incrementProduct (product.signature)" icon="pi pi-plus"
@@ -373,7 +373,7 @@ onMounted(async () => {
 .cart-product-quantity-container {
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: space-between;
 }
 
 .cart-product-quantity-control {

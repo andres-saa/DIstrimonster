@@ -1,6 +1,6 @@
 <template>
 
-  <banner-carousel></banner-carousel>
+  <!-- <banner-carousel></banner-carousel> -->
   <RouterView></RouterView>
 
 

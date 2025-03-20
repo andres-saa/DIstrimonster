@@ -15,7 +15,7 @@
                       <ProgressSpinner v-if="spinnersView.ciudad" class="spinner" strokeWidth="8" fill="var(--white)"
                           animationDuration=".5s" aria-label="Cargando ciudades" />
                   </div>
-                  <Dropdown id="city-dropdown" v-model="currenCity" @click="resetSelectedSite" :options="cities"
+                  <Dropdown id="city-dropdown" v-model="currenCity" @click="resetSelectedSite" :options="cities.filter(city => city.city_id != 15)"
                       optionLabel="city_name" placeholder="SELECCIONA UNA CIUDAD" class="dropdown" required />
               </div>
 
@@ -132,7 +132,7 @@ const getCities = async () => {
         const response = await fetch(`${URI}/cities`);
         if (response.ok) {
             const data = await response.json();
-            cities.value = data;
+            cities.value = data.filter(d => d.site_id != 15);
         }
     } catch (error) {
         console.error('Error obteniendo ciudades:', error);

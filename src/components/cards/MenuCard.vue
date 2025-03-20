@@ -39,11 +39,11 @@
                             <b>
                                 {{
                                     formatoPesosColombianos(
-                                        props.product.productogeneral_precio ||
-                                        props.product.lista_presentacion[0].producto_precio
+                                        props.product.productogeneral_precio  / props.product.kilos ||
+                                        props.product.lista_presentacion[0].producto_precio / props.product.kilos
                                     )
                                 }}
-                            </b>
+                            </b> <span class="text-l" style="font-size: .8rem;">/ Kg</span> 
 
 
 
@@ -60,12 +60,13 @@
                             <b>
                                 {{
                                     formatoPesosColombianos(
-                                        props.product.mayor
+                                        props.product.mayor / props.product.kilos
 
                                     )
                                 }}
                             </b>
-
+                            
+                            <span class="text-l" style="font-size: .8rem;">/ Kg</span> 
 
 
                         </h3>
@@ -81,14 +82,14 @@
                             <b>
                                 {{
                                     formatoPesosColombianos(
-                                        props.product.distribuidor
+                                        props.product.distribuidor / props.product.kilos
 
                                     )
                                 }}
                             </b>
 
 
-
+                            <span class="text-l" style="font-size: .8rem;">/ Kg</span> 
                         </h3>
                     </div>
 
@@ -305,6 +306,7 @@ onBeforeUnmount(() => {
 
     overflow: hidden;
     height: 100%;
+    max-width: 40rem;
     width: 100%;
     margin: 0;
     padding: 1rem;
@@ -342,7 +344,10 @@ onBeforeUnmount(() => {
     h2 {
         font-size: 20px;
     }
+
+ 
 }
+
 
 
 

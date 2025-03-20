@@ -44,7 +44,7 @@
                                                         severity="danger" style="border-radius:.5rem 0 0 .5rem;height: 2.5rem;" class="cart-addition-quantity-btn-minus"
                                                         icon="pi pi-minus"></Button>
 
-                                                    <InputNumber :max-fraction-digits="0" min="1" :inputStyle="{ width: '100%',maxWidth:'10rem', height: '2.5rem',borderRadius:'0',textAlign:'center' }" style="height: 100%;" type="number"  v-model="quantity"
+                                                    <InputNumber :suffix="` pack${quantity > 1? 's': ''} (${store.currentProduct.kilos * quantity}kg)`" :max-fraction-digits="0" min="1" :inputStyle="{ width: '100%',maxWidth:'15rem', height: '2.5rem',borderRadius:'0',textAlign:'center' }" style="height: 100%;width: 100%;" type="number"  v-model="quantity"
                                                         class="cart-addition-quantity-label p-0 text-center"/>
 
                                                     <Button @click="quantity+=1"
@@ -75,7 +75,7 @@
 
 
 <div style="display: flex;gap: .5rem;margin-bottom: .5rem; width: min-content;">
-  <Tag severity="success"  style="min-width: max-content;">{{  quantity}} {{quantity < 2? 'Unidad': 'Unidades'}}</Tag>
+  <Tag severity="success"  style="min-width: max-content;">{{  quantity}} {{quantity < 2? 'Pack': 'Packs'}}</Tag>
 
 
 <Tag severity="success"   style="min-width: max-content;">{{ store.currentProduct.kilos * quantity}} Kg</Tag>
@@ -93,10 +93,10 @@
 <b>
     {{
         formatoPesosColombianos(
-            store.currentProduct.productogeneral_precio ||
-            store.currentProduct.lista_presentacion[0].producto_precio
+            store.currentProduct.productogeneral_precio / store.currentProduct.kilos ||
+            store.currentProduct.lista_presentacion[0].producto_precio / store.currentProduct.kilos
         )
-    }}
+    }} / Kg
 </b>
 
 
@@ -107,12 +107,12 @@
 
                           <span>Detal: </span>
                             <b>
-                                {{
-                                    formatoPesosColombianos(
-                                        store.currentProduct.productogeneral_precio ||
-                                        store.currentProduct.lista_presentacion[0].producto_precio
-                                    )
-                                }}
+                              {{
+        formatoPesosColombianos(
+            store.currentProduct.productogeneral_precio / store.currentProduct.kilos ||
+            store.currentProduct.lista_presentacion[0].producto_precio / store.currentProduct.kilos
+        ) 
+    }} / Kg
                             </b>
 
 
@@ -136,10 +136,10 @@
                           <b>
                               {{
                                   formatoPesosColombianos(
-                                      store.currentProduct.mayor
+                                      store.currentProduct.mayor / store.currentProduct.kilos
 
                                   )
-                              }}
+                              }} / kg
                           </b>
 
 
@@ -150,15 +150,14 @@
                         <h3 class="text-2xl p-0 m-0 precio">
 
                           <span>Mayor: </span>
-                            <b>
-                                {{
-                                    formatoPesosColombianos(
-                                        store.currentProduct.mayor
+                          <b>
+                              {{
+                                  formatoPesosColombianos(
+                                      store.currentProduct.mayor / store.currentProduct.kilos
 
-                                    )
-                                }}
-                            </b>
-
+                                  )
+                              }} / kg
+                          </b>
 
 
                         </h3>
@@ -182,10 +181,10 @@
                             <b>
                                 {{
                                     formatoPesosColombianos(
-                                        store.currentProduct.distribuidor
+                                        store.currentProduct.distribuidor / store.currentProduct.kilos
 
                                     )
-                                }}
+                                }} /Kg
                             </b>
 
 
@@ -200,12 +199,12 @@
 
 
                             <b>
-                                {{
+                              {{
                                     formatoPesosColombianos(
-                                        store.currentProduct.distribuidor
+                                        store.currentProduct.distribuidor / store.currentProduct.kilos
 
                                     )
-                                }}
+                                }} /Kg
                             </b>
 
 

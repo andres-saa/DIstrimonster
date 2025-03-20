@@ -12,7 +12,7 @@
             </p>
 
             <p v-else class="estado no-existe">
-                Digita el numero de tu pedido ejemplo <strong style="text-transform: uppercase;">LAU-3034</strong>
+                Digita el numero de tu pedido ejemplo <strong style="text-transform: uppercase;">DIS-3034</strong>
             </p>
         </div>
 

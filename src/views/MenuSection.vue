@@ -222,7 +222,7 @@ if( !siteStore.location?.site?.pe_site_id){
  Cuando la ventana sea menor a 768px,
  queda en 1 columna (formato de “tarjeta” vertical).
 */
-@media (max-width: 870px) {
+@media (max-width: 1044px) {
   .section {
       grid-template-columns: repeat(1, 1fr);
   }

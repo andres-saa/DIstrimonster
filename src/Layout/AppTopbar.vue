@@ -20,19 +20,19 @@
       </div>
 
 
-      <!-- <i class="pi pi-map-marker" @click="siteStore.visibles.currentSite = true"></i> -->
-      <!-- <div class="site-info" @click="siteStore.visibles.currentSite = true">
+   <i class="pi pi-map-marker" @click="siteStore.visibles.currentSite = true"></i> 
+  <div class="site-info" @click="siteStore.visibles.currentSite = true">
 
         <div class="site-info-status">
           <span class="city-name">{{ siteStore.location?.city?.city_name }}</span>
-          <Tag v-if="siteStore.status?.status == 'open'" class="status-tag">Abierto</Tag>
-          <Tag v-else-if="siteStore.status?.status" class="closed-tag">Cerrado</Tag>
-          <Tag v-else="siteStore.status?.status" class="closed-tag">Seleccionar sede</Tag>
+          <!-- <Tag v-if="siteStore.status?.status == 'open'" class="status-tag">Abierto</Tag>
+          <Tag v-else-if="siteStore.status?.status" class="closed-tag">Cerrado</Tag> -->
+          <Tag  class="closed-tag">Seleccionar sede</Tag>
         </div>
         <div class="site-info-name" v-if="siteStore.location?.site?.site_id">
           <span class="city-name"> Sede - {{ siteStore.location?.site.site_name }}</span>
         </div>
-      </div> -->
+      </div> 
     </div>
 
     <!-- Información para dispositivos móviles -->
@@ -137,8 +137,8 @@ const buttons = [
   { name: 'Precios de la semana', to: '/menu', icon: 'fa-solid fa-list' },
   // { name: 'mi cotizacion', to: '/cotizacion', icon: 'fa-solid fa-list' },
 
-  // { name: 'Rastrear Pedido', to: '/rastrear-pedido', icon: 'fa-solid fa-truck' },
-  // { name: 'Franquicias', to: '/franquicias', icon: 'fa-solid fa-store' },
+  { name: 'Rastrear Pedido', to: '/rastrear-pedido', icon: 'fa-solid fa-truck' },
+  // { name: 'Franquicias', to: '/franquicias', icon: 'fa-solid fa-store' }, 
   // { name: 'Ayuda/PQR', to: '/pqrs-user', icon: 'fa-solid fa-question-circle' },
   // { name: 'Colaboraciones', to: '/colaboraciones', icon: 'fa-solid fa-music' },
   // { name: 'Sonando', to: '/sonando', icon: 'fa-solid fa-music' },
@@ -373,7 +373,7 @@ i {
 }
 
 .closed-tag {
-  padding: 0 1rem;
+  padding: 0 .5rem;
   animation: anim_status_tag_closed infinite .5s;
   color: rgb(255, 255, 255);
   background-color: rgb(255, 0, 0);
@@ -400,12 +400,12 @@ i {
   }
 
   50% {
-    background-color: rgb(0, 0, 0);
+    background-color: rgb(255, 0, 0);
   }
 
   80% {
-    background-color: rgb(143, 0, 0);
-    transform: scale(1.1);
+    background-color: rgb(255, 0, 0);
+    transform: scale(1.05);
   }
 
 
