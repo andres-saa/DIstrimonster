@@ -103,7 +103,7 @@
     
       <div class="backend-info" v-if="backendInfo" style="padding: 0; width: 100%;">
         <h3>Información del Usuario</h3>
-        <p><strong>Cedula / Nit:</strong> {{ backendInfo?.user_phone }}</p>
+        <p><strong>Cedula / Nit:</strong> {{ backendInfo?.cedula_nit }}</p>
         <p>
           <strong>Nombre:</strong>
           {{ backendInfo?.user_name }} {{ backendInfo?.second_name }} {{ backendInfo?.first_last_name }} {{ backendInfo?.second_last_name }}
