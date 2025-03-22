@@ -1,7 +1,7 @@
 <template>
   <div v-if="user?.user?.cedula_nit" class="finalizar-compra-container">
     <!-- Letrero informativo -->
-    <div style="margin: auto; max-width: 800px;">
+    <div style="margin: auto; max-width: 900px;">
       <div class="title" style="margin: 3rem .5rem">
         <!-- Se muestra el mensaje dinámico -->
         <Tag severity="success" class="advertice">{{ deliveryMessage }}</Tag>
@@ -19,9 +19,9 @@
           <strong>Nombre:</strong>
           {{ user.user?.user_name }} {{ user.user?.second_name }} {{ user.user?.first_last_name }} {{ user.user?.second_last_name }}
         </p>
-        <p><strong>Teléfono:</strong> {{ user.user?.user_phone }}</p>
-        <p><strong>Dirección:</strong> {{ user.user?.user_address }}</p>
-        <p><strong>Correo:</strong> {{ user.user?.email }}</p>
+        <p><strong>Teléfono:</strong> **********</p>
+        <p><strong>Dirección:</strong> *********</p>
+        <p><strong>Correo:</strong> ******@*****.com</p>
         <div style="width: 100%;margin-top: 1rem ; display: flex;justify-content: end;">
           <Button security="info" @click="() => {user.user = {}}" label="Estos no son mis datos"></Button>
           </div>
@@ -108,9 +108,9 @@
           <strong>Nombre:</strong>
           {{ backendInfo?.user_name }} {{ backendInfo?.second_name }} {{ backendInfo?.first_last_name }} {{ backendInfo?.second_last_name }}
         </p>
-        <p><strong>Teléfono:</strong> {{ backendInfo?.user_phone }}</p>
-        <p><strong>Dirección:</strong> {{ backendInfo?.user_address }}</p>
-        <p><strong>Correo:</strong> {{ backendInfo?.email }}</p>
+        <p><strong>Teléfono:</strong> **********</p>
+        <p><strong>Dirección:</strong> **********</p>
+        <p><strong>Correo:</strong>*****@****.com</p>
       </div>
 
 
@@ -161,11 +161,7 @@
       </div>
 
 
-      <div class="form-group">
-        <label for="user_address">Dirección</label>
-        <InputText id="user_address" v-model="newUser.user_address" placeholder="Dirección" />
-      </div>
-  
+
   
     
    
@@ -201,6 +197,19 @@ const soy = (man) => {
   displayRegisteredDialog.value = false;
 };
 
+
+
+    const deliveries = {
+      "8": 350, // Bogotá
+      "9": 500, // Medellín
+      "10": 0, // Cali
+      "11": 0, // Palmira
+      "13": 0, // Jamundí
+      "15": 0, // New Jersey - EE.UU
+      "14": 0  // Yumbo
+    }
+
+
 const noFound = ref(false)
 
 const searchUserByDni = async (dni) => {
@@ -232,7 +241,7 @@ const backendInfo = ref(null);
 const newUser = ref({
   user_name: '',
   user_phone: '',
-  user_address: '',
+  user_address: 'sin direccion',
   site_id: '32',
   cedula_nit: '',
   email: '',
@@ -254,10 +263,7 @@ const create_user = async (user_new) => {
     alert('El teléfono es obligatorio para el registro.');
     return
   }
-  if (!user_new.user_address || user_new.user_address.trim() === '') {
-    alert('La dirección es obligatoria para el registro.');
-    return
-  }
+
   if (!user_new.site_id || user_new.site_id.trim() === '') {
     alert('El ID del sitio es obligatorio para el registro.');
     return
@@ -484,9 +490,20 @@ const deliveryMessage = computed(() => {
   }
 });
 
-watch(deliveryMessage, () => {
-  store.cart.delivery_horaentrega = deliveryMessage;
-});
+onMounted(() => {
+
+  if (siteStore.location?.site?.city_id) {
+    store.delivery_horaentrega = calculate_fecha_entrega(new Date(),siteStore.location?.site?.city_id );
+
+  }
+
+})
+
+watch(() => siteStore.location?.site?.city_id, (value) => {
+  store.delivery_horaentrega = calculate_fecha_entrega(new Date(), value);
+} , {deep:true});
+
+
 </script>
 
 <style scoped>
@@ -525,15 +542,16 @@ watch(deliveryMessage, () => {
 
 .form-grid {
   display: grid;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
+  padding: .5rem;
   grid-template-columns: 1fr;
   gap: 2rem;
 }
 
 @media (min-width: 768px) {
   .form-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.5fr 2fr;
   }
 }
 
@@ -640,5 +658,9 @@ select {
   background-color: rgb(255, 0, 0);
   border-radius: 9px;
   border: 5px solid var(--primary-color);
+}
+
+*{
+  text-transform: capitalize;
 }
 </style>

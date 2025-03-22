@@ -3,6 +3,19 @@
       <!-- Contenedor principal “Resumen” -->
       <div class="sticky-summary col-12 p-3 m-0">
           <h5><b>Resumen</b></h5>
+
+          <div v-if="route.fullPath.includes('pay') || route.fullPath.includes('gracias')">
+            <b>          fecha de entrega:</b>
+            {{ store.delivery_horaentrega }}
+          </div>
+         
+          
+          <div v-if="route.fullPath.includes('pay') || route.fullPath.includes('gracias')">
+            <b>          Lugar de entrega:</b>
+            {{ siteStore.location?.site?.site_address }} sede {{ siteStore.location?.site?.site_name }}
+          </div>
+         
+
           <h5><b>productos</b></h5>
 
           <!-- Lista de productos -->
@@ -12,12 +25,12 @@
               <div class="mb-0 pb-0 product-line">
                   <div class="col-6 py-2 mb-0 m-0">
                   <h6 class="m-0">
-                      <span class="span-minwidth">( {{ product.pedido_cantidad }} ) </span>
-                     <span style="font-weight: 400;"> {{ product.pedido_nombre_producto }}</span>
+                      <span class="span-minwidth"> ( {{ product.pedido_cantidad * product.kilos }} kg )  </span>
+                     <span style="font-weight: 400;"> {{ product.pedido_nombre_producto }} ( {{ product.pedido_cantidad }} packs )</span>
                   </h6>
 
                   <h6 class="m-0 ml-3 " style="margin-left: 1rem;" v-for="i in product.lista_productocombo" :key="i.producto_id">
-                      ( {{  product.pedido_cantidad }} ) <b style="margin-right: .5rem;">{{ parseInt(i.pedido_cantidad ) }}</b>
+                      ( {{  product.pedido_cantidad  }} ) <b style="margin-right: .5rem;">{{ parseInt(i.pedido_cantidad ) }}</b>
                       <span class="font-weight-400">{{ i.pedido_nombre   }}</span>
                   </h6>
 
@@ -49,7 +62,7 @@
                               </span>
                           </div>
                   </div>
-
+<div class="py-3 my-3" style="width: 100%;border-top: .2rem dashed;margin: .5rem 0;"></div>
           </div>
 
           <!-- Adicionales agrupados -->
@@ -58,7 +71,7 @@
 
           </div>
 
-          <hr class="p-0 mt-2" />
+
 
           <!-- Subtotales y totales -->
           <div class="grid summary-grid">
@@ -76,7 +89,20 @@
               </div>
 
               <div class="col-6 my-0 py-0">
-                  <span><b>Domicilio <span style="color: var(--p-primary-color)"> ($ 300 por kilo)</span></b></span>
+                  <span>
+                    <b>Domicilio 
+                      <span style="color: var(--p-primary-color)">
+                        <span style="min-width: max-content;" v-if="deliveries[siteStore.location.site?.city_id] > 0"> ($ {{ deliveries[siteStore.location.site?.city_id]  }} por kilo) 
+
+                        </span> 
+
+                        <span v-else >
+                          No aplica
+                        </span> 
+                      </span>
+                    </b>
+                  </span>
+                  
               </div>
               <div class="col-6 my-0 text-right py-0 text-end" >
                   <!-- {{ siteStore.location }} -->
@@ -107,7 +133,6 @@
 
           </div>
 
-        
       </div>
   </div>
 </template>
@@ -127,6 +152,16 @@ import { useReportesStore } from '@/store/ventas';
 const reportes = useReportesStore()
 
 
+const deliveries = {
+      "8": 350, // Bogotá
+      "9": 500, // Medellín
+      "10": 0, // Cali
+      "11": 0, // Palmira
+      "13": 0, // Jamundí
+      "15": 0, // New Jersey - EE.UU
+      "14": 0  // Yumbo
+    }
+
 const totalProductos = computed(() => {
 
 
@@ -135,12 +170,13 @@ const totalProductos = computed(() => {
   }
 
 
-  console.log(store.cart)
+
+
   return store.cart.reduce((acc, item) => {
     // item.kilos       => número de kilos
     // item.product.quantity => cantidad de ese producto
     // 300             => factor multiplicador fijo
-    return acc + (300 * item.kilos * item.pedido_cantidad )
+    return acc + (deliveries[`${siteStore.location.site?.city_id}`] * item.kilos * item.pedido_cantidad )
   }, 0)
 })
 
@@ -218,6 +254,7 @@ onMounted(() => {
 .product-line {
   display: flex;
   justify-content: space-between;
+  gap: 3rem;
 }
 
 /* Span con min-width: 3rem; y width: 100% */
@@ -322,5 +359,9 @@ button {
 
 *::first-letter {
   text-transform: uppercase;
+}
+
+*{
+  text-transform: capitalize;
 }
 </style>

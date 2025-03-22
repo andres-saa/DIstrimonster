@@ -34,13 +34,26 @@ const preparar_orden = () => {
     return
   }
 
+
+
+
   const delivery_price = cart.cart.reduce((acc, item) => {
-    return acc + (300 * item.kilos * item.pedido_cantidad )
+    const sstore = useSitesStore()
+    const deliveries = {
+      "8": 350, // Bogotá
+      "9": 500, // Medellín
+      "10": 0, // Cali
+      "11": 0, // Palmira
+      "13": 0, // Jamundí
+      "15": 0, // New Jersey - EE.UU
+      "14": 0  // Yumbo
+    }
+    return acc + (deliveries[`${sstore.location.site?.city_id}`] * item.kilos * item.pedido_cantidad )
   }, 0);
 
   const order_notes = cart.cart.order_notes;
   const user_data = {
-    user_name: user.user.user_name,
+    user_name:`${user.user.user_name} ${user.user.second_name} ${user.user.first_last_name} ${user.user.second_last_name}`,
     user_phone: user.user.user_phone?.split(" ").join(""),
     user_address: `${site.location?.site?.site_address} - ${site.location.site.site_name}` || "",
   };
@@ -62,7 +75,7 @@ const preparar_orden = () => {
     pe_json: order_products,
     total: 0,
     order_type_id: user.user.order_type?.id,
-    sede_recoger:`${site.location?.site?.site_address} - ${site.location.site.site_name}` || "",
+    sede_recoger:`${site.location?.site?.site_address} - SEDE ${site.location.site.site_name}` || "",
 
   };
   console.log(order)

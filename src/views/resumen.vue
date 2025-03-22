@@ -3,6 +3,19 @@
       <!-- Contenedor principal “Resumen” -->
       <div class="sticky-summary col-12 p-3 m-0">
           <h5><b>Resumen</b></h5>
+
+          <div v-if="route.fullPath.includes('pay') || route.fullPath.includes('gracias')">
+            <b>          fecha de entrega:</b>
+            {{ store.delivery_horaentrega }}
+          </div>
+         
+          
+          <div v-if="route.fullPath.includes('pay') || route.fullPath.includes('gracias')">
+            <b>          Lugar de entrega:</b>
+            {{ siteStore.location?.site?.site_address }} sede {{ siteStore.location?.site?.site_name }}
+          </div>
+         
+
           <h5><b>productos</b></h5>
 
           <!-- Lista de productos -->
@@ -76,7 +89,20 @@
               </div>
 
               <div class="col-6 my-0 py-0">
-                  <span><b>Domicilio <span style="color: var(--p-primary-color)"> ($ 300 por kilo)</span></b></span>
+                  <span>
+                    <b>Domicilio 
+                      <span style="color: var(--p-primary-color)">
+                        <span style="min-width: max-content;" v-if="deliveries[siteStore.location.site?.city_id] > 0"> ($ {{ deliveries[siteStore.location.site?.city_id]  }} por kilo) 
+
+                        </span> 
+
+                        <span v-else >
+                          No aplica
+                        </span> 
+                      </span>
+                    </b>
+                  </span>
+                  
               </div>
               <div class="col-6 my-0 text-right py-0 text-end" >
                   <!-- {{ siteStore.location }} -->
@@ -171,6 +197,16 @@ import { useReportesStore } from '@/store/ventas';
 const reportes = useReportesStore()
 
 
+const deliveries = {
+      "8": 350, // Bogotá
+      "9": 500, // Medellín
+      "10": 0, // Cali
+      "11": 0, // Palmira
+      "13": 0, // Jamundí
+      "15": 0, // New Jersey - EE.UU
+      "14": 0  // Yumbo
+    }
+
 const totalProductos = computed(() => {
 
 
@@ -179,12 +215,13 @@ const totalProductos = computed(() => {
   }
 
 
-  console.log(store.cart)
+
+
   return store.cart.reduce((acc, item) => {
     // item.kilos       => número de kilos
     // item.product.quantity => cantidad de ese producto
     // 300             => factor multiplicador fijo
-    return acc + (300 * item.kilos * item.pedido_cantidad )
+    return acc + (deliveries[`${siteStore.location.site?.city_id}`] * item.kilos * item.pedido_cantidad )
   }, 0)
 })
 
@@ -367,5 +404,9 @@ button {
 
 *::first-letter {
   text-transform: uppercase;
+}
+
+*{
+  text-transform: capitalize;
 }
 </style>

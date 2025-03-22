@@ -24,13 +24,13 @@
   <div class="site-info" @click="siteStore.visibles.currentSite = true">
 
         <div class="site-info-status">
-          <span class="city-name">{{ siteStore.location?.city?.city_name }}</span>
+          <!-- <span class="city-name">{{ siteStore.location?.city?.city_name }}</span> -->
           <!-- <Tag v-if="siteStore.status?.status == 'open'" class="status-tag">Abierto</Tag>
           <Tag v-else-if="siteStore.status?.status" class="closed-tag">Cerrado</Tag> -->
-          <Tag  class="closed-tag">Seleccionar sede</Tag>
+          <Tag  class="closed-tag"> Cambiar sede</Tag>
         </div>
-        <div class="site-info-name" v-if="siteStore.location?.site?.site_id">
-          <span class="city-name"> Sede - {{ siteStore.location?.site.site_name }}</span>
+        <div class="site-info-name" v-if="siteStore.location?.site?.site_id" style="width: 100%;overflow: hidden;">
+          <h5 class="city-name" style="width: 100%; overflow: hidden; max-width: 120rem;">  {{ siteStore.location?.site.site_name?.split(' ').slice(0,2).join(' ') }}</h5>
         </div>
       </div> 
     </div>

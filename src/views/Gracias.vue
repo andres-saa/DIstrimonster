@@ -104,27 +104,51 @@ const obtenerHoraFormateadaAMPM = (fecha) => {
 
 
 
+const sitestore = useSitesStore()
+
 
 
 onMounted(() => {
   reportes.setLoading(false, "enviando tu pedido");
 
-  text.value = `Hola soy *${user.user.name.toUpperCase()}* 🤗 acabo de hacer el siguiente pedido en la página web. El número de la orden es *#${store.last_order}*.\n
 
-  *Escribo para Realizar la Transferecia*\n
+  const message_products = []
 
-  *Muchas Gracias* 🙏`;
-
-  console.log(text.value);
+  store.cart.forEach(element => {
 
 
-  text2.value = `Hola soy *${user.user.name.toUpperCase()}* 🤗 acabo de hacer el siguiente pedido en la página web. El número de la orden es *#${store.last_order}*.\n
+    message_products.push(`*(${element.pedido_cantidad * element.kilos} kilos)* de ${element.pedido_nombre_producto} ( ${element.pedido_cantidad} ${element.pedido_cantidad == 1? 'pack': 'packs'} )` )
+    console.log(element)
+    // console.log(message)
+  }
+);
 
-  *Escribo para confirmar mi pedido*\n
+// console.log(message_products)
 
-  *Muchas Gracias* 🙏`;
+text.value = `Hola soy *${user.user.name.toUpperCase()} ${user.user.second_name?.toUpperCase()}  ${user.user.first_last_name?.toUpperCase()} ${user.user.second_last_name?.toUpperCase()}* 🤗 acabo de hacer el siguiente pedido en la página web *distrimonster.com*
 
-  console.log(text2.value);
+${message_products.join('\n')}
+
+El número de la orden es *#${store.last_order}*.
+la pagina indica que es para recoger en la sede *${sitestore.location.site?.site_name}* el  *${store.delivery_horaentrega}*
+
+*Escribo para Realizar la Transferecia*\n
+*Muchas Gracias* 🙏`;
+
+
+
+
+text2.value = `Hola soy *${user.user.name.toUpperCase()} ${user.user.second_name?.toUpperCase()}  ${user.user.first_last_name?.toUpperCase()} ${user.user.second_last_name?.toUpperCase()}*
+
+🤗 acabo de hacer el siguiente pedido en la página web *distrimonster.com*
+
+${message_products.join('\n')}
+
+El número de la orden es *#${store.last_order}*.
+la pagina indica que es para recoger en la sede *${sitestore.location.site?.site_name}* el  *${store.delivery_horaentrega}*
+
+*Escribo para Confirmar el pedido*\n
+*Muchas Gracias* 🙏`;
 
 });
 

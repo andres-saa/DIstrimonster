@@ -7,7 +7,7 @@
                 <Button label="Buscar" class="search-button" @click="getOrder" />
             </div>
 
-            <p v-if="order?.status" :class="`estado ${order.status}`">
+            <p v-if="order?.status" :class="`estado ${order.status?.split(' ').join('-')}`">
                 {{ getOrderMessage(order) }}
             </p>
 
@@ -51,20 +51,31 @@ const getOrder = async () => {
 onMounted(() => {
     order_id.value = order_store.last_order || "";
 });
+const opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+const opcionesHora = { hour: '2-digit', minute: '2-digit', hour12: true };
 
 const getOrderMessage = (order) => {
-    const hora = obtenerHoraFormateadaAMPM(order.timestamp);
+
+    const fecha = new Date(order.timestamp).toLocaleDateString('es-ES', opcionesFecha);
+    const hora = new Date(order.timestamp).toLocaleTimeString('es-ES', opcionesHora);
+
     switch (order.status) {
         case "enviada":
-            return `El pedido fue enviado a su domicilio a las ${hora}`;
+            return `El pedido fue enviado a su destino el ${fecha} a las ${hora}`;
         case "cancelada":
-            return `El pedido fue cancelado a las ${hora}\nResponsable: ${order.responsible}\nRazón: ${order.reason}`;
+            return `El pedido fue cancelado el  ${fecha} a las ${hora} \nResponsable: ${order.responsible}\nRazón: ${order.reason}`;
         case "en preparacion":
-            return `El pedido está en preparación desde las ${hora} y será enviado en breve.`;
+            return `El pedido está en preparación desde el ${fecha} a las ${hora} y será enviado en breve.`;
         case "generada":
-            return `Hemos recibido su pedido a las ${hora} y empezaremos a prepararlo en breve. Gracias por su espera.`;
+            return `Hemos recibido su pedido el ${fecha} a las ${hora} y empezaremos a prepararlo en breve. Gracias por su espera.`;
+        case "transferencia pendiente":
+            return `Tu pedido se encuentra pendiente de trasferencia, pronto te contactaremos `;
+ 
+        case "validacion pendiente":
+            return `Tu pedido se encuentra en proceso de validacion pronto te contactaremos `;
+ 
         default:
-            return "";
+            return order.status;
     }
 };
 
@@ -150,6 +161,16 @@ const obtenerHoraFormateadaAMPM = (fecha) => {
 .cancelada {
     background-color: rgba(255, 84, 84, 0.7);
 }
+
+.validacion-pendiente {
+    background-color: rgba(107, 198, 133, 0.7);
+}
+
+
+.transferencia-pendiente {
+    background-color: rgba(250, 147, 255, 0.7);
+}
+
 
 .no-existe {
     background-color: #f9741632;
