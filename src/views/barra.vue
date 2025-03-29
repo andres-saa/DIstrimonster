@@ -8,7 +8,7 @@
         <i class="cart-icon icono pi pi-shopping-cart"></i>
 
         <div v-for="product in store.cart.slice(0, 4)" :key="product.id" class="product-item">
-          <Button class="quantity-button" :label="`${product.pedido_cantidad}`" severity="danger" rounded />
+          <Tag class="quantity-button" :label="`${product.pedido_cantidad}`" severity="danger" rounded > {{product.pedido_cantidad}}</Tag>
           <img class="img-cart" @mouseover="() => vueMenu = true"
             :src="`${URI}/get-image?image_url=${product.productogeneral_urlimagen}`" alt="Product Image" />
         </div>
@@ -77,7 +77,7 @@ const enviarAlCarro = () => {
 /* Cart bar styling */
 .cart-bar {
   display: flex;
-  gap: 2rem;
+  gap: 3rem;
   border-radius: 1rem 1rem 0 0;
   align-items: center;
   position: relative;
@@ -123,8 +123,7 @@ const enviarAlCarro = () => {
 
 /* Quantity badge styling */
 .quantity-button {
-  width: 1.4rem;
-  height: 1.4rem;
+
   font-size: 0.8rem;
   position: absolute;
   top: -0.3rem;
@@ -132,14 +131,17 @@ const enviarAlCarro = () => {
   border: none;
   color: white;
   font-weight: bold;
-  border-radius: 50%;
+  min-width: 2rem;
+  border-radius: .3rem;
   right: -0.5rem;
 }
 
 /* Product image styling */
 .img-cart {
-  height: 3rem;
-  object-fit: contain;
+  height: 2.5rem;
+  width: 2.5rem;
+  object-fit: cover;
+
   transition: all 0.3s ease;
 }
 

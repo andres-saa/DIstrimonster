@@ -174,11 +174,13 @@ export const usecartStore = defineStore('salchi_super_cart_web4433d', {
       const newProduct = {
           "pedido_precio": this.getProductPrice(product),
           "pedido_escombo":product.productogeneral_escombo,
-          "pedido_cantidad": quantity,
+          "pedido_cantidad":parseFloat(quantity.toFixed(1))  ,
           "pedido_base_price": this.getProductPrice(product),
           "minor":product.minor,
           "mayor":product.mayor,
-          "kilos":product.kilos,
+          "presentacion":product.presentacion,
+          "unit_measure":product.unit_measure,
+          "presentation_unit_measure":product.presentation_unit_measure,
           "distribuidor":product.distribuidor,
           "pedido_productoid": this.getProductId(product),
           "lista_productocombo": product.lista_productobase?  product.lista_productobase.map( product => {
@@ -215,7 +217,8 @@ export const usecartStore = defineStore('salchi_super_cart_web4433d', {
 
       if (existIndex != -1){
         const existingProduct = this.cart[existIndex]
-        existingProduct.pedido_cantidad += quantity
+        const newq = existingProduct.pedido_cantidad + parseFloat(quantity.toFixed(1))
+        existingProduct.pedido_cantidad = parseFloat(newq.toFixed(1))
         console.log(this.cart[existIndex])
       }
       else {
@@ -231,58 +234,68 @@ export const usecartStore = defineStore('salchi_super_cart_web4433d', {
     },
 
     // Decrementar la cantidad de un producto
-    decrementProduct(signature) {
-      const existIndex = this.cart.findIndex(p => p.signature === signature)
-      if (existIndex !== -1) {
-        const existingProduct = this.cart[existIndex]
-        existingProduct.pedido_cantidad -= 1
 
-        // Si la cantidad es 0 o menor, eliminar el producto del arreglo
-        if (existingProduct.pedido_cantidad <= 0) {
-          this.cart.splice(existIndex, 1)
-        }
+
+    ajustarCantidad(newVal, presentacion) {
+      // factor en base a cuántos decimales quieras manejar
+      const factor = 10; // 1 decimal => factor = 10
+
+      // Convertimos a entero para evitar problemas de coma flotante
+      const newValInt = Math.round(newVal * factor);
+      const presentInt = Math.round(presentacion * factor);
+
+      // 1) Verificar cantidad mínima
+      if (newValInt < presentInt) {
+        return parseFloat((presentInt / factor).toFixed(1));
       }
+
+      // 2) Verificar si es múltiplo
+      if (newValInt % presentInt !== 0) {
+        const nuevoInt = Math.ceil(newValInt / presentInt) * presentInt;
+        return parseFloat((nuevoInt / factor).toFixed(1));
+      }
+
+      // Si no necesita ajuste, igual forzamos a 1 decimal
+      return parseFloat((newValInt / factor).toFixed(1));
     },
+
+
+
+
+
 
     incrementProduct(signature) {
-      const existIndex = this.cart.findIndex(p => p.signature == signature)
-      if (existIndex != -1){
-        const existingProduct = this.cart[existIndex]
-        existingProduct.pedido_cantidad += 1
-        console.log(this.cart[existIndex])
+      const idx = this.cart.findIndex(item => item.signature === signature);
+      if (idx !== -1) {
+        const product = this.cart[idx];
+
+        // Sumamos en base a la presentación
+        const nuevaCantidad = product.pedido_cantidad + product.presentacion;
+
+        // Forzamos a 1 decimal
+        product.pedido_cantidad = parseFloat(nuevaCantidad.toFixed(1));
       }
     },
 
+    decrementProduct(signature) {
+      const idx = this.cart.findIndex(item => item.signature === signature);
+      if (idx !== -1) {
+        const product = this.cart[idx];
 
-    // Incrementar la cantidad de un adicional específico
-    incrementAdditional(signature, additionalItem) {
-      const existIndex = this.cart.findIndex(p => p.signature == signature)
-      if (existIndex != -1){
-        const existingProduct = this.cart[existIndex]
-        const aditional = existingProduct.modificadorseleccionList.find(a => a === additionalItem)
-        aditional.modificadorseleccion_cantidad++
-      }
-    },
+        // Restamos en base a la presentación
+        const nuevaCantidad = product.pedido_cantidad - product.presentacion;
 
-    // Decrementar la cantidad de un adicional específico
-    decrementAdditional(signature, additionalItem) {
-      const existIndex = this.cart.findIndex(p => p.signature === signature)
-      if (existIndex !== -1) {
-        const existingProduct = this.cart[existIndex]
+        // Forzamos a 1 decimal
+        const cantidadAjustada = parseFloat(nuevaCantidad.toFixed(1));
 
-        // Encontramos el índice del adicional en 'modificadorseleccionList'
-        const aditionalIndex = existingProduct.modificadorseleccionList.findIndex(a => a === additionalItem)
-
-        if (aditionalIndex !== -1) {
-          // Decrementar la cantidad
-          existingProduct.modificadorseleccionList[aditionalIndex].modificadorseleccion_cantidad--
-
-          // Si después de la resta queda 0 o menos, eliminarlo del arreglo
-          if (existingProduct.modificadorseleccionList[aditionalIndex].modificadorseleccion_cantidad < 1) {
-            existingProduct.modificadorseleccionList.splice(aditionalIndex, 1)
-          }
+        // Si la cantidad resultante es cero o menor, removemos el producto del carrito
+        if (cantidadAjustada <= 0) {
+          this.cart.splice(idx, 1);
+        } else {
+          product.pedido_cantidad = cantidadAjustada;
         }
       }
     }
+
   },
 })

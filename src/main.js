@@ -2,6 +2,8 @@ import './assets/main.css'
 // import 'primevue/resources/themes/lara-light-indigo/theme.css'; // O tu tema personalizado
 // import 'primevue/resources/primevue.min.css'; // Estilos básicos de PrimeVue
 import 'primeicons/primeicons.css';
+
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
@@ -14,6 +16,8 @@ import ToastService from 'primevue/toastservice';
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { randomHoverColor } from './service/randomHoverColor';
 import { randomHoverBorderColor } from './service/randomHoverBorderColor';
+import ConfirmationService from 'primevue/confirmationservice';
+
 import App from './App.vue'
 import router from './router'
 const app = createApp(App)
@@ -93,6 +97,7 @@ const MyPreset = definePreset(Aura, {
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
+app.use(ConfirmationService);
 app.use(router)
 app.use(ToastService);
 app.directive('random-hover-color', randomHoverColor)

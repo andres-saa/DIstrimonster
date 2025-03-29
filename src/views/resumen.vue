@@ -8,13 +8,13 @@
             <b>          fecha de entrega:</b>
             {{ store.delivery_horaentrega }}
           </div>
-         
-          
+
+
           <div v-if="route.fullPath.includes('pay') || route.fullPath.includes('gracias')">
             <b>          Lugar de entrega:</b>
             {{ siteStore.location?.site?.site_address }} sede {{ siteStore.location?.site?.site_name }}
           </div>
-         
+
 
           <h5><b>productos</b></h5>
 
@@ -25,8 +25,8 @@
               <div class="mb-0 pb-0 product-line">
                   <div class="col-6 py-2 mb-0 m-0">
                   <h6 class="m-0">
-                      <span class="span-minwidth"> ( {{ product.pedido_cantidad * product.kilos }} kg )  </span>
-                     <span style="font-weight: 400;"> {{ product.pedido_nombre_producto }} ( {{ product.pedido_cantidad }} packs )</span>
+                      <span class="span-minwidth"> ( {{ product.pedido_cantidad.toFixed(1)  }} {{product.unit_measure}} )  </span>
+                     <span style="font-weight: 400;"> {{ product.pedido_nombre_producto }} ( {{ (product.pedido_cantidad / product.presentacion).toFixed(0) }} {{product.presentation_unit_measure}}s )</span>
                   </h6>
 
                   <h6 class="m-0 ml-3 " style="margin-left: 1rem;" v-for="i in product.lista_productocombo" :key="i.producto_id">
@@ -90,19 +90,19 @@
 
               <div class="col-6 my-0 py-0">
                   <span>
-                    <b>Domicilio 
+                    <b>Domicilio
                       <span style="color: var(--p-primary-color)">
-                        <span style="min-width: max-content;" v-if="deliveries[siteStore.location.site?.city_id] > 0"> ($ {{ deliveries[siteStore.location.site?.city_id]  }} por kilo) 
+                        <span style="min-width: max-content;" v-if="deliveries[siteStore.location.site?.city_id] > 0"> ($ {{ deliveries[siteStore.location.site?.city_id]  }} por kilo)
 
-                        </span> 
+                        </span>
 
                         <span v-else >
                           No aplica
-                        </span> 
+                        </span>
                       </span>
                     </b>
                   </span>
-                  
+
               </div>
               <div class="col-6 my-0 text-right py-0 text-end" >
                   <!-- {{ siteStore.location }} -->
@@ -122,7 +122,7 @@
               </div>
 
 
-            
+
 
 
 <span></span>
@@ -221,7 +221,7 @@ const totalProductos = computed(() => {
     // item.kilos       => número de kilos
     // item.product.quantity => cantidad de ese producto
     // 300             => factor multiplicador fijo
-    return acc + (deliveries[`${siteStore.location.site?.city_id}`] * item.kilos * item.pedido_cantidad )
+    return acc + (deliveries[`${siteStore.location.site?.city_id}`]  * item.pedido_cantidad )
   }, 0)
 })
 

@@ -5,7 +5,7 @@
   <h2 style="text-align: center;margin: 2rem 0;">Precios de la semana</h2>
 
 
-  <div style="margin-top: 10rem; max-width: 1000px; margin: 2rem auto;padding: 1rem;">
+  <div style="margin-top: 10rem; max-width: 1200px; margin: 2rem auto;padding: 1rem;">
 
 
     <DataTable :value="data" class="shadow-1" style="">
@@ -72,6 +72,48 @@
 
         </template>
       </Column>
+
+
+
+
+
+
+      <Column header="Presentacion" class="m-0 py-0 " style="">
+        <template #body="slotProps">
+
+          <div style="display: flex;">
+              <InputNumber v-if="modificando"
+          :inputStyle="{ width: '100%',maxWidth:'10rem', height: '2rem',borderRadius:'0' }"
+
+            v-model="slotProps.data.distribuidor"
+            mode="currency"
+            currency="USD"
+            locale="en-US"
+            :minFractionDigits="0"
+            :maxFractionDigits="2"
+
+          />
+          <span v-else class="m-0 p-0">
+            {{ slotProps.data.presentacion }} kg
+          </span>
+          </div>
+
+        </template>
+      </Column>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </DataTable>
 
 

@@ -39,11 +39,11 @@
                             <b>
                                 {{
                                     formatoPesosColombianos(
-                                        props.product.productogeneral_precio  / props.product.kilos ||
-                                        props.product.lista_presentacion[0].producto_precio / props.product.kilos
+                                        props.product.productogeneral_precio ||
+                                        props.product.lista_presentacion[0].producto_precio
                                     )
                                 }}
-                            </b> <span class="text-l" style="font-size: .8rem;">/ Kg</span> 
+                            </b> <span class="text-l" style="font-size: .8rem;">/ {{props.product.unit_measure}}</span>
 
 
 
@@ -60,13 +60,13 @@
                             <b>
                                 {{
                                     formatoPesosColombianos(
-                                        props.product.mayor / props.product.kilos
+                                        props.product.mayor
 
                                     )
                                 }}
                             </b>
-                            
-                            <span class="text-l" style="font-size: .8rem;">/ Kg</span> 
+
+                            <span class="text-l" style="font-size: .8rem;">/ {{props.product.unit_measure}}</span>
 
 
                         </h3>
@@ -82,14 +82,14 @@
                             <b>
                                 {{
                                     formatoPesosColombianos(
-                                        props.product.distribuidor / props.product.kilos
+                                        props.product.distribuidor
 
                                     )
                                 }}
                             </b>
 
 
-                            <span class="text-l" style="font-size: .8rem;">/ Kg</span> 
+                            <span class="text-l" style="font-size: .8rem;">/ {{props.product.unit_measure}}</span>
                         </h3>
                     </div>
 
@@ -98,7 +98,9 @@
         </div>
 
 
-        <Tag style="position: absolute;bottom: 0;width: 5rem; border-radius: 0 .5rem 0 0 ;">{{ props.product.kilos }} Kg</Tag>
+
+          <Tag   style="width:100%;border-radius: 0;color: white; grid-area: d;text-transform: capitalize;height: min-content;"> Compra minima {{ props.product.presentacion }} {{props.product.unit_measure}} = 1 {{ props.product.presentation_unit_measure }}</Tag>
+
 
 
     </div>
@@ -310,6 +312,7 @@ onBeforeUnmount(() => {
     width: 100%;
     margin: 0;
     padding: 1rem;
+
     box-shadow: 0 1rem 1rem rgba(160, 160, 160, 0.3);
     border-radius: 0.5rem;
     /* Curvatura específica */
@@ -318,8 +321,9 @@ onBeforeUnmount(() => {
     cursor: pointer;
     grid-template-areas:
             "a a a"
-            "b c c";
-            grid-template-columns: 1fr 1fr;
+            "b c c"
+            "d d d";
+            grid-template-columns: 1fr 1fr 1fr;
 
 }
 
@@ -345,7 +349,7 @@ onBeforeUnmount(() => {
         font-size: 20px;
     }
 
- 
+
 }
 
 

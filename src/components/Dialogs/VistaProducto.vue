@@ -40,14 +40,14 @@
     <template #footer>
       <div
                                                     class="cart-addition-quantity-control">
-                                                    <Button @click="quantity>1? quantity-=1 : 0"
+                                                    <Button @click="decrementQuantity"
                                                         severity="danger" style="border-radius:.5rem 0 0 .5rem;height: 2.5rem;" class="cart-addition-quantity-btn-minus"
                                                         icon="pi pi-minus"></Button>
 
-                                                    <InputNumber :suffix="` pack${quantity > 1? 's': ''} (${store.currentProduct.kilos * quantity}kg)`" :max-fraction-digits="0" min="1" :inputStyle="{ width: '100%',maxWidth:'15rem', height: '2.5rem',borderRadius:'0',textAlign:'center' }" style="height: 100%;width: 100%;" type="number"  v-model="quantity"
+                                                    <InputNumber :step="5" :suffix="` ${store.currentProduct.unit_measure} ( ${ (quantity / store.currentProduct.presentacion).toFixed(0) } ${store.currentProduct.presentation_unit_measure})`" :max-fraction-digits="1" :inputStyle="{ width: '100%',maxWidth:'15rem', height: '2.5rem',borderRadius:'0',textAlign:'center' }" style="height: 100%;width: 100%;" type="number"  v-model="quantity"
                                                         class="cart-addition-quantity-label p-0 text-center"/>
 
-                                                    <Button @click="quantity+=1"
+                                                    <Button @click="incrementQuantity"
                                                         severity="danger" style="border-radius:0 .5rem .5rem 0;height: 2.5rem;" class="cart-addition-quantity-btn-plus"
                                                         icon="pi pi-plus"></Button>
                                                 </div>
@@ -75,10 +75,10 @@
 
 
 <div style="display: flex;gap: .5rem;margin-bottom: .5rem; width: min-content;">
-  <Tag severity="success"  style="min-width: max-content;">{{  quantity}} {{quantity < 2? 'Pack': 'Packs'}}</Tag>
+  <Tag severity="success"  style="min-width: max-content;">{{  quantity}} {{quantity < 2? store.currentProduct.unit_measure: store.currentProduct.unit_measure}}</Tag>
 
 
-<Tag severity="success"   style="min-width: max-content;">{{ store.currentProduct.kilos * quantity}} Kg</Tag>
+<Tag severity="success"   style="min-width: max-content;">{{(quantity /  store.currentProduct.presentacion).toFixed(0) }} {{store.currentProduct.presentation_unit_measure}}</Tag>
 
 
 </div>
@@ -93,10 +93,10 @@
 <b>
     {{
         formatoPesosColombianos(
-            store.currentProduct.productogeneral_precio / store.currentProduct.kilos ||
-            store.currentProduct.lista_presentacion[0].producto_precio / store.currentProduct.kilos
+            store.currentProduct.productogeneral_precio  ||
+            store.currentProduct.lista_presentacion[0].producto_precio
         )
-    }} / Kg
+    }} / {{store.currentProduct.unit_measure}}
 </b>
 
 
@@ -109,10 +109,10 @@
                             <b>
                               {{
         formatoPesosColombianos(
-            store.currentProduct.productogeneral_precio / store.currentProduct.kilos ||
-            store.currentProduct.lista_presentacion[0].producto_precio / store.currentProduct.kilos
-        ) 
-    }} / Kg
+            store.currentProduct.productogeneral_precio  ||
+            store.currentProduct.lista_presentacion[0].producto_precio
+        )
+    }} / {{store.currentProduct.unit_measure}}
                             </b>
 
 
@@ -136,10 +136,9 @@
                           <b>
                               {{
                                   formatoPesosColombianos(
-                                      store.currentProduct.mayor / store.currentProduct.kilos
-
+                                      store.currentProduct.mayor
                                   )
-                              }} / kg
+                              }} / {{store.currentProduct.unit_measure}}
                           </b>
 
 
@@ -153,10 +152,9 @@
                           <b>
                               {{
                                   formatoPesosColombianos(
-                                      store.currentProduct.mayor / store.currentProduct.kilos
-
+                                      store.currentProduct.mayor
                                   )
-                              }} / kg
+                              }} / {{store.currentProduct.unit_measure}}
                           </b>
 
 
@@ -181,10 +179,9 @@
                             <b>
                                 {{
                                     formatoPesosColombianos(
-                                        store.currentProduct.distribuidor / store.currentProduct.kilos
-
+                                        store.currentProduct.distribuidor
                                     )
-                                }} /Kg
+                                }} / {{store.currentProduct.unit_measure}}
                             </b>
 
 
@@ -201,10 +198,10 @@
                             <b>
                               {{
                                     formatoPesosColombianos(
-                                        store.currentProduct.distribuidor / store.currentProduct.kilos
+                                        store.currentProduct.distribuidor
 
                                     )
-                                }} /Kg
+                                }} / {{store.currentProduct.unit_measure}}
                             </b>
 
 
@@ -323,6 +320,18 @@
 
     </div>
   </Dialog>
+
+
+
+<Dialog header="Cantidad incorrecta" v-model:visible="dialog_confirm" modal="" style="width: 20rem; max-width: 95vw;">
+
+  <h4 style="font-weight: 400;">  {{ message_dialog }}</h4>
+
+</Dialog>
+
+
+
+    <Toast />
 </template>
 
 <script setup>
@@ -340,6 +349,48 @@ import { Dialog } from 'primevue';
 import { Button } from 'primevue';
 import { URI } from '@/service/conection';
 import {InputNumber} from 'primevue';
+import {ConfirmDialog} from 'primevue';
+import { useConfirm } from 'primevue/useconfirm';
+
+
+const confirm = useConfirm();
+const toast = useToast()
+const dialog_confirm = ref(false)
+
+const message_dialog = ref("")
+
+
+
+const incrementQuantity = () => {
+  quantity.value = parseFloat(
+    (quantity.value + store.currentProduct.presentacion).toFixed(1)
+  );
+};
+
+const decrementQuantity = () => {
+  if (quantity.value > store.currentProduct.presentacion) {
+    quantity.value = parseFloat(
+      (quantity.value - store.currentProduct.presentacion).toFixed(1)
+    );
+  } else {
+    quantity.value = parseFloat(store.currentProduct.presentacion.toFixed(1));
+  }
+};
+
+
+
+const requireConfirmation = () => {
+    confirm.require({
+        group: 'headless',
+        header: 'Are you sure?',
+        message: message_dialog.value,
+        accept: () => {
+            toast.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+        },
+    });
+};
+
+
 // import { URI } from '@/service/conection';
 const store = usecartStore();
 const route = useRoute();
@@ -361,11 +412,12 @@ watch(() => store.visibles.currentProduct, (newVal) => {
 
   selectedAdditions.value = {}
   checkedAdition.value = {}
-  quantity.value = 1
+  quantity.value = store.currentProduct.presentacion
 },{deep:true})
 
 const productBaseToChange = ref(null);
 const showChangeDialog = ref(false);
+
 
 
 
@@ -467,6 +519,21 @@ const decrement = (item) => {
  */
 const addToCart = (product) => {
   // alert('hola');
+
+
+    if (quantity.value % store.currentProduct.presentacion !== 0) {
+
+    // Ajustar la cantidad al siguiente múltiplo de 'store.currentProduct.presentacion'
+
+    const new_quantity = (quantity.value / store.currentProduct.presentacion) * store.currentProduct.presentacion;
+
+    quantity.value = new_quantity
+
+
+  }
+
+
+
   const additionsArray = Object.values(selectedAdditions.value);
 
   store.addProductToCart(product,quantity.value,additionsArray);
@@ -490,6 +557,38 @@ watch(
     if (route.path != '/') {
       router.push(new_route);
 
+    }
+  }
+);
+
+watch(
+  () => quantity.value,
+  (newVal) => {
+    if (!store.currentProduct?.presentacion) return;
+
+    // factor en base a cuántos decimales quieras manejar
+    const factor = 10; // si manejas 1 decimal
+
+    // Convertimos a entero para evitar problemas de coma flotante
+    const newValInt = Math.round(newVal * factor);
+    const presentInt = Math.round(store.currentProduct.presentacion * factor);
+
+    // Verificamos cantidad mínima
+    if (newValInt < presentInt) {
+      quantity.value = presentInt / factor;
+      message_dialog.value = `La cantidad mínima es  ${store.currentProduct.presentacion} ${store.currentProduct.unit_measure}, ya lo hemos ajustado por usted para completar 1 ${store.currentProduct.presentation_unit_measure}`;
+      dialog_confirm.value = true;
+      return;
+    }
+
+    // Verificamos si es múltiplo
+    if (newValInt % presentInt !== 0) {
+      const nuevoInt = Math.ceil(newValInt / presentInt) * presentInt;
+      const nuevo = nuevoInt / factor;
+
+      quantity.value = nuevo;
+      message_dialog.value = `Debe comprar la presentación completa. Ajustamos la cantidad a ${nuevo} ${store.currentProduct.unit_measure}, que equivalen a ${(nuevo / store.currentProduct.presentacion).toFixed(0)} ${store.currentProduct.presentation_unit_measure}(s).`;
+      dialog_confirm.value = true;
     }
   }
 );
@@ -575,7 +674,7 @@ onMounted(() => {
 
 });
 
-const toast = useToast();
+
 </script>
 
 <style scoped>
@@ -984,6 +1083,10 @@ const toast = useToast();
 /* Para texto en mayúsculas */
 .mayuscula {
   text-transform: uppercase;
+}
+
+.dialogo{
+  padding: 1rem;
 }
 
 input::-webkit-outer-spin-button,

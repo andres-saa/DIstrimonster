@@ -23,11 +23,12 @@
                           <img class="cart-product-img p-1"
                           :src="`${URI}/get-image?image_url=${product.productogeneral_urlimagen}`" alt="" />
 
-                          <div style="display: flex;gap: .5rem;margin-bottom: .5rem; width: min-content;">
-                              <Tag severity="success"  style="min-width: max-content;">{{  product.pedido_cantidad}} {{product.pedido_cantidad < 2? 'Pack': 'Packs'}}</Tag>
+                          <div style="display: flex;gap: .5rem;margin-bottom: .5rem; width: min-content;align-items: center;">
+                            <Tag severity="success"   style="min-width: max-content;">{{  product.pedido_cantidad}} {{product.unit_measure}}</Tag> <strong>=</strong>
+
+                              <Tag severity="success"  style="min-width: max-content;">{{  (product.pedido_cantidad / product.presentacion).toFixed(0)}} {{product.presentation_unit_measure}}s</Tag>
 
 
-                            <Tag severity="success"   style="min-width: max-content;">{{ product.kilos * product.pedido_cantidad}} Kg</Tag>
 
 
                             </div>
@@ -45,19 +46,19 @@
                               <div v-if="product.pedido_cantidad >= 500 && product.pedido_cantidad < 1000">
                                 <Tag  style="width: max-content; margin-right: .5rem;"> Precio por mayor</Tag>
 
-                                {{ formatoPesosColombianos(product.mayor / product.kilos) }} /Kg
+                                {{ formatoPesosColombianos(product.mayor) }} /{{product.unit_measure}}
 
 
                               </div>
                               <div v-else-if="product.pedido_cantidad >= 1000">
                                 <Tag  style="width: max-content;margin-right: .5rem;"> Precio de distribuidor</Tag>
-                                {{ formatoPesosColombianos(product.distribuidor / product.kilos) }} /kg
+                                {{ formatoPesosColombianos(product.distribuidor) }} /{{product.unit_measure}}
 
                               </div>
 
                               <div v-else>
                                 <Tag  style="width: max-content;margin-right: .5rem;"> Al detal</Tag>
-                                {{ formatoPesosColombianos(product.minor / product.kilos) }} /kg
+                                {{ formatoPesosColombianos(product.minor) }} /{{product.unit_measure}}
 
                               </div>
 
@@ -73,8 +74,8 @@
                                           @click="store.decrementProduct(product.signature)"
                                           icon="pi pi-minus" severity="danger"></Button>
 
-                                  
-                                      <InputNumber :suffix="` pack${product.pedido_cantidad > 1? 's': ''} (${product.pedido_cantidad * product.kilos}kg)`" :max-fraction-digits="0" min="1" :inputStyle="{ width: '100%',maxWidth:'15rem', height: '2rem',borderRadius:'0',textAlign:'center' }" style="height: 100%;width: 100%;"   v-model="product.pedido_cantidad"
+
+                                      <InputNumber readonly="" :suffix="`${product.unit_measure} (${(product.pedido_cantidad / product.presentacion).toFixed(0)} ${product.presentation_unit_measure})`" :max-fraction-digits="1" min="1" :inputStyle="{ width: '100%',maxWidth:'15rem', height: '2rem',borderRadius:'0',textAlign:'center' }" style="height: 100%;width: 100%;"   v-model="product.pedido_cantidad"
                                         class="cart-addition-quantity-label p-0 text-center"/>
 
                                       <Button class="cart-quantity-btn-plus"
@@ -230,6 +231,18 @@ const deleteAd = (adicion) => {
   store.removeAdditionCompletelyFromCart(adicion.id);
   update();
 };
+
+
+
+
+
+
+
+
+
+
+
+
 
 const deleteGroup = (items) => {
   items.forEach((item) => {

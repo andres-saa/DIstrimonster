@@ -20,7 +20,7 @@
       </div>
 
 
-   <i class="pi pi-map-marker" @click="siteStore.visibles.currentSite = true"></i> 
+   <i class="pi pi-map-marker" @click="siteStore.visibles.currentSite = true"></i>
   <div class="site-info" @click="siteStore.visibles.currentSite = true">
 
         <div class="site-info-status">
@@ -32,7 +32,7 @@
         <div class="site-info-name" v-if="siteStore.location?.site?.site_id" style="width: 100%;overflow: hidden;">
           <h5 class="city-name" style="width: 100%; overflow: hidden; max-width: 120rem;">  {{ siteStore.location?.site.site_name?.split(' ').slice(0,2).join(' ') }}</h5>
         </div>
-      </div> 
+      </div>
     </div>
 
     <!-- Información para dispositivos móviles -->
@@ -103,21 +103,21 @@ const route = useRoute();
 onMounted(async () => {
   const site_id = siteStore.location.site?.site_id
   const pe_id = siteStore.location.site?.pe_site_id || 1
-  const status = await fetchService.get(`${URI}/site/${site_id}/status`)
-  if (status) {
-    siteStore.status = status
-  }
+  // const status = await fetchService.get(`${URI}/site/${site_id}/status`)
+  // if (status) {
+  //   siteStore.status = status
+  // }
   // cart.menu = await fetchService.get(`${URI}/get-product-integration/6149/${pe_id}/status`)
 })
 
 const socialLinks = [
   {
     icon: 'pi pi-facebook',
-    href: 'https://www.facebook.com/salchimonsterr'
+    href: 'https://www.facebook.com/share/167f3dboiG/?mibextid=wwXIfr'
   },
   {
     icon: 'pi pi-instagram',
-    href: 'https://www.instagram.com/salchimonsterr/'
+    href: 'https://www.instagram.com/distrimonster1/?igsh=YmVudWxwOGVzdTV5&utm_source=qr#'
   },
   {
     icon: 'pi pi-whatsapp',
@@ -125,7 +125,7 @@ const socialLinks = [
   },
   {
     icon: 'pi pi-youtube',
-    href: 'hhttps://www.youtube.com/@Salchimonster/videos'
+    href: 'https://youtube.com/@distrimonster?si=9mDymzJxpvVqeslj'
   }
 ];
 
@@ -138,7 +138,7 @@ const buttons = [
   // { name: 'mi cotizacion', to: '/cotizacion', icon: 'fa-solid fa-list' },
 
   { name: 'Rastrear Pedido', to: '/rastrear-pedido', icon: 'fa-solid fa-truck' },
-  // { name: 'Franquicias', to: '/franquicias', icon: 'fa-solid fa-store' }, 
+  // { name: 'Franquicias', to: '/franquicias', icon: 'fa-solid fa-store' },
   // { name: 'Ayuda/PQR', to: '/pqrs-user', icon: 'fa-solid fa-question-circle' },
   // { name: 'Colaboraciones', to: '/colaboraciones', icon: 'fa-solid fa-music' },
   // { name: 'Sonando', to: '/sonando', icon: 'fa-solid fa-music' },

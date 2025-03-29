@@ -66,7 +66,7 @@ const preparar_orden = () => {
     // "pe_site_id":pe_site_id,
     delivery_person_id: 4,
     payment_method_id: payment_method_id,
-    delivery_price: delivery_price,
+    delivery_price: delivery_price || 0,
     order_notes: order_notes || "SIN NOTAS",
     user_data: user_data,
     user_id:user.user.user_id,
