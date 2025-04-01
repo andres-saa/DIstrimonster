@@ -211,7 +211,7 @@ const toggleMobileMenu = () => {
   z-index: 999;
   top: 0;
   justify-content: space-between;
-  box-shadow: 0 1rem 4rem #00000020;
+  box-shadow: 0 1rem 1rem #00000040;
   background-color: var(--p-secondary-color);
   align-items: center;
   max-width: 100vw;

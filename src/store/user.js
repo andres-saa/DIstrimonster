@@ -3,10 +3,10 @@ import { URI } from "../service/conection";
 
 
 export const useUserStore = defineStore('user', {
-   
+
     persist: {
-       
-                key: 'user', 
+
+                key: 'user',
                 storage: localStorage,
                 paths:[
                     'user'

@@ -5,7 +5,7 @@ export const usecartStore = defineStore('salchi_super_cart_web4433d', {
   persist: {
     key: 'salchi_super_cart_web4433d',
     storage: sessionStorage,
-    paths: ['cart', 'last_order', 'menu'],
+    paths: ['cart', 'last_order', 'menu', ],
   },
   state: () => ({
     currentProduct: {},
