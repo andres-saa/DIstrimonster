@@ -221,7 +221,7 @@ const totalProductos = computed(() => {
     // item.kilos       => número de kilos
     // item.product.quantity => cantidad de ese producto
     // 300             => factor multiplicador fijo
-    return acc + (deliveries[`${siteStore.location.site?.city_id}`]  * item.pedido_cantidad )
+    return acc + (deliveries[`${siteStore.location.site?.city_id}`]  * item.pedido_cantidad * item.kilos_delivery )
   }, 0)
 })
 

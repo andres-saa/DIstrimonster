@@ -48,7 +48,7 @@ const preparar_orden = () => {
       "15": 0, // New Jersey - EE.UU
       "14": 0  // Yumbo
     }
-    return acc + (deliveries[`${sstore.location.site?.city_id}`] * item.kilos * item.pedido_cantidad )
+    return acc + (deliveries[`${sstore.location.site?.city_id}`] * item.kilos_delivery * item.pedido_cantidad )
   }, 0);
 
   const order_notes = cart.cart.order_notes;
