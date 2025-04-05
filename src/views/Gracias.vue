@@ -173,7 +173,7 @@ la pagina indica que es para recoger en la sede *${
 const whatsappUrl = computed(() => {
   const baseUrl = "https://api.whatsapp.com/send";
   const urlParams = new URLSearchParams({
-    phone: "573053447255",
+    phone: "573172988238",
     text: text.value,
   });
   return `${baseUrl}?${urlParams.toString()}`;
@@ -182,7 +182,7 @@ const whatsappUrl = computed(() => {
 const whatsappUrl2 = computed(() => {
   const baseUrl = "https://api.whatsapp.com/send";
   const urlParams = new URLSearchParams({
-    phone: "573053447255",
+    phone: "573172988238",
     text: text2.value,
   });
   return `${baseUrl}?${urlParams.toString()}`;

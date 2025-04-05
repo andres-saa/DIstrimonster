@@ -121,7 +121,7 @@ const socialLinks = [
   },
   {
     icon: 'pi pi-whatsapp',
-    href: 'https://wa.link/5mq1t0'
+    href: 'https://api.whatsapp.com/send?phone=573172988238'
   },
   {
     icon: 'pi pi-youtube',
