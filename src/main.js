@@ -17,9 +17,15 @@ import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { randomHoverColor } from './service/randomHoverColor';
 import { randomHoverBorderColor } from './service/randomHoverBorderColor';
 import ConfirmationService from 'primevue/confirmationservice';
-
 import App from './App.vue'
 import router from './router'
+
+
+const handler = ePayco.checkout.configure({
+  key: '45b960805ced5c27ce34b1600b4b9f54',
+  test: true
+});
+
 const app = createApp(App)
 const MyPreset = definePreset(Aura, {
   semantic: {
@@ -102,7 +108,6 @@ app.use(router)
 app.use(ToastService);
 app.directive('random-hover-color', randomHoverColor)
 app.directive('random-hover-border-color', randomHoverBorderColor)
-
 app.use(PrimeVue, {
 
   // Default theme configuration

@@ -42,6 +42,20 @@ const router = createRouter({
               meta: {  title:'Horarios' },
 
             },
+            {
+              path: '/acepted',
+              name: 'acepted',
+              component: () => import('@/views/Acepted.vue'),
+              meta: {  title:'Listo' },
+
+            },
+            {
+              path: '/rejected',
+              name: 'rejected',
+              component: () => import('@/views/Rejected.vue'),
+              meta: {  title:'Ups' },
+
+            },
 
             {
               path: '/colaboraciones',
@@ -94,6 +108,13 @@ const router = createRouter({
               path: '/gracias',
               name: 'gracias',
               component: () => import('@/views/Gracias.vue'),
+              meta: {  title:'Muchas gracias' },
+
+            },
+            {
+              path: '/gracias-epayco',
+              name: 'gracias-epayco',
+              component: () => import('@/views/GraciasEpayco.vue'),
               meta: {  title:'Muchas gracias' },
 
             },
