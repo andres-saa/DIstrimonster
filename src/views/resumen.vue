@@ -175,15 +175,32 @@
       <!-- BOTÓN QUE USA LA PASARELA DE EPAYCO -->
       <Button
         :disabled="reportes.loading.visible"
-        v-else-if="route.path == '/pay' && !reportes.loading.visible"
-        @click="payWithEpayco"
+        v-else-if="route.path == '/pay' && !reportes.loading.visible && user?.user?.payment_method_option?.id == 6"
+        @click="pay"
         iconPos="right"
         icon="pi pi-arrow-right"
-        label="Pagar con Epayco"
+        label="Realizar pago con Tarjeta"
         class="mt-2 button-common button-black button-fullwidth button-bold button-no-border button-no-outline"
         severity="help"
       />
+
+
+
+      <Button
+        :disabled="reportes.loading.visible"
+        v-else-if="route.path == '/pay' && !reportes.loading.visible "
+        @click="orderService.sendOrder()"
+        iconPos="right"
+        icon="pi pi-arrow-right"
+        label="Finalizar pedido"
+        class="mt-2 button-common button-black button-fullwidth button-bold button-no-border button-no-outline"
+        severity="help"
+      />
+
+
+
     </div>
+
   </div>
 </template>
 
@@ -197,7 +214,9 @@ import { useUserStore } from '@/store/user';
 import { Button } from 'primevue';
 import { Tag } from 'primevue';
 import { useReportesStore } from '@/store/ventas';
-
+import { SELF_URI, URI } from '@/service/conection';
+import { orderServiceEpayco } from '@/service/order/orderServiceEpayco';
+import { orderService } from '@/service/order/orderService';
 const reportes = useReportesStore();
 const route = useRoute();
 const store = usecartStore();
@@ -250,7 +269,16 @@ const calcularPrecioProducto = (product) => {
  * Solo validamos que esté disponible.
  */
 
-const payWithEpayco = () => {
+
+ const order_id = ref('')
+
+const pay = async() => {
+ order_id.value =  await orderServiceEpayco.sendOrder()
+ payWithEpayco(order_id.value)
+
+}
+
+const payWithEpayco = (order_id) => {
   // Verificamos que el objeto ePayco esté disponible en window
   if (!window.ePayco) {
     console.error("Epayco script no se ha cargado o no está disponible");
@@ -276,14 +304,14 @@ const payWithEpayco = () => {
     description: "Compra en nuestro restaurante",
     amount: totalAPagar,
     currency: "cop",
-    invoice: "ORDER-" + Date.now(), // ID único (puedes ajustar a tu lógica)
+    invoice: order_id, // ID único (puedes ajustar a tu lógica)
     tax_base: "0",
     tax: "0",
     country: "co",
     lang: "es",
     external: "false",
-    confirmation: "https", // Ajusta con tu backend
-    response: "https://distrimonster.com/gracias"      // URL de respuesta final
+    confirmation: `${URI}/confirmacion-epayco`, // Ajusta con tu backend
+    response: `${SELF_URI}/gracias-epayco`     // URL de respuesta final
   });
 };
 

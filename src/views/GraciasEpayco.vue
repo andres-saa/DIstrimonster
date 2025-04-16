@@ -12,7 +12,7 @@
         class="text-4xl text-center mt-5"
         style="font-weight: bold; text-align: center;"
       >
-        🤩{{ user.user?.name?.toUpperCase() }}🤩
+        🤩{{ order?.pe_json?.cliente?.cliente_nombres?.toUpperCase() }} {{ order?.pe_json?.cliente?.cliente_nombres?.cliente_apellidos?.toUpperCase() }}🤩
       </p>
 
       <p
@@ -29,7 +29,7 @@
       >
         <span class="text-2xl">ID DEL PEDIDO</span>
         <br />
-        #{{ store?.last_order || "" }}
+        #{{ order?.id || "" }}
       </p>
 
       <div id="factura" style="width: 100%; text-transform: uppercase;">
@@ -168,9 +168,16 @@
 
 
 </div>
+
       </div>
 
 
+      <a style="display: flex; gap:1rem;text-decoration: none; margin:3rem 0" :href="`https://secure.epayco.co/landingresume?ref_payco=${route.query.ref_payco}`">
+
+
+        <Button icon="pi pi-print" style="background-color: black;width:50%; border:none;outline:none" label="Imprimir 0 guardar" ></Button>
+        <Button icon="pi pi-send" style="width:50%; border:none;outline:none" label="Enviar a mi correo" ></Button>
+      </a>
 
     </div>
 
@@ -195,6 +202,7 @@ import { formatoPesosColombianos } from "@/service/utils/formatoPesos";
 import { useReportesStore } from "@/store/ventas";
 import { useRoute } from "vue-router";
 import { fetchService } from "@/service/utils/fetchService";
+import { URI } from "@/service/conection";
 
 // Stores
 const store = usecartStore();
@@ -204,6 +212,8 @@ const reportes = useReportesStore();
 const route = useRoute()
 const epayco_data = ref({})
 
+
+const order  = ref({})
 
 onMounted( async() => {
 
@@ -233,6 +243,7 @@ onMounted(async() => {
   if (epayco){
   const response = await fetchService.get(`https://secure.epayco.co/validation/v1/reference/${epayco}`)
   epayco_data.value = response?.data
+  order.value = await fetchService.get(`${URI}/order/epayco/${epayco}`)
   }
 
 
